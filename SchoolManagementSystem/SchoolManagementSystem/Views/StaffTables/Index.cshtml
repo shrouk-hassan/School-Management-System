@@ -1,0 +1,66 @@
+﻿@model IEnumerable<DatabaseAccess.StaffTable>
+
+@{
+    ViewBag.Title = "Employees";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Add New Employee", "Create", null, new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Full Name
+        </th>
+        <th>
+            Contact No
+        </th>
+        <th>
+            Salary
+        </th>
+        <th>
+            Address
+        </th>
+        <th>
+            Photo
+        </th>
+        <th>
+            Status
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BasicSalary)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @if(!string.IsNullOrEmpty(item.Photo))
+            {
+                <img src="@Url.Content(item.Photo)" alt="Image" style="width:100px; height:150px; max-width:100%; height:auto;"/>
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td class="btn-group">
+            @Html.ActionLink("Edit", "Edit", new { id = item.StaffID }, new { @class="btn btn-primary"})
+            @Html.ActionLink("Details", "Details", new { id = item.StaffID }, new { @class = "btn btn-info" })
+            @Html.ActionLink("Add Resume", "Resume", new { id = item.StaffID }, new { @class = "btn btn-success" })
+        </td>
+    </tr>
+}
+
+</table>
