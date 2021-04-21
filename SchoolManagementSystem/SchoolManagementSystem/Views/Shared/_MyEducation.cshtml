@@ -1,4 +1,4 @@
-﻿@model SchoolManagementSystem.ViewModels.EducationVM
+﻿@model SchoolManagementSystem.ViewModels.EmployeeEducationTableVM
 
 <style type="text/css">
 
@@ -78,7 +78,7 @@
                             @Html.DropDownListFor(model => model.City, new List<SelectListItem>(), new { @class = "form-control" })
                         </div>
                     </div>
-                    @Html.HiddenFor(model => model.IDEdu, new { @class = "form-control" })
+                    @Html.HiddenFor(model => model.EmployeeEducationID, new { @class = "form-control" })
 
                     <button type="button" id="AddOrUpdateEducation" class="btn btn-success"> <span class="glyphicon glyphicon-education" aria-hidden="true"></span>  Add Eduction </button>
                     <a href="@Url.Action("WorkExperience", "Resume")" class="btn btn-success" style="position: relative; right: -50%;"> Next Step>> Work Experience </a>

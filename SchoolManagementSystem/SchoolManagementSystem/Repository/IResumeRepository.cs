@@ -6,24 +6,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using DatabaseAccess;
+
 
 namespace SchoolManagementSystem.Repository
 {
     public interface IResumeRepository
     {
-        bool AddPersonnalInformation(Person person, HttpPostedFileBase file);
-        string AddOrUpdateEducation(Education education, int idPer);
-        int GetIdPerson(string firstName, string lastName);
-        string AddOrUpdateExperience(WorkExperience workExperience, int idPer);
-        bool AddSkill(Skill skill, int idPer);
-        bool AddCertification(Certification certification, int idPer);
-        bool AddLanguage(Language language, int idPer);
-        Person GetPersonnalInfo(int idPer);
-        IQueryable<Education> GetEducationById(int idPer);
-        IQueryable<WorkExperience> GetWorkExperienceById(int idPer);
-        IQueryable<Skill> GetSkillsById(int idPer);
-        IQueryable<Certification> GetCertificationsById(int idPer);
-        IQueryable<Language> GetLanguageById(int idPer);
+        bool AddPersonnalInformation(EmployeeResumeTable person, HttpPostedFileBase file);
+        string AddOrUpdateEducation(EmployeeEducationTable education, int EmployeeResumeID);
+        int GetIdPerson(int EmployeeID);
+        string AddOrUpdateExperience(EmployeeWorkExperienceTable workExperience, int EmployeeResumeID);
+        bool AddSkill(EmployeeSkillTable skill, int EmployeeResumeID);
+        bool AddCertification(EmployeeCertificationTable certification, int EmployeeResumeID);
+        bool AddLanguage(EmployeeLanguageTable language, int EmployeeResumeID);
+        EmployeeResumeTable GetPersonnalInfo(int EmployeeID);
+        IQueryable<EmployeeEducationTable> GetEducationById(int EmployeeResumeID);
+        IQueryable<EmployeeWorkExperienceTable> GetWorkExperienceById(int EmployeeResumeID);
+        IQueryable<EmployeeSkillTable> GetSkillsById(int EmployeeResumeID);
+        IQueryable<EmployeeCertificationTable> GetCertificationsById(int EmployeeResumeID);
+        IQueryable<EmployeeLanguageTable> GetLanguageById(int EmployeeResumeID);
 
 
     }

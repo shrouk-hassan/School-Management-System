@@ -1,4 +1,7 @@
-﻿using DatabaseAccess;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using DatabaseAccess;
+using SchoolManagementSystem.Models;
 using SchoolManagementSystem.Repository;
 using SchoolManagementSystem.ViewModels;
 using System;
@@ -23,10 +26,16 @@ namespace SchoolManagementSystem.Controllers
             return View();
         }
 
-        public ActionResult CheckCV()
+        public ActionResult CheckCV(int? id)
         {
             var employeeid = 0;
-            int.TryParse(Convert.ToString(Session["EmployeeID"]), out employeeid);
+
+            if (id == null || id == 0) { 
+
+            int.TryParse(Convert.ToString(Session["EmployeeID"]), out employeeid); 
+            
+            }
+            employeeid = Convert.ToInt32 (id);
             using (SchoolMgtSysDbEntities db = new SchoolMgtSysDbEntities())
             {
                 var people = db.EmployeeResumeTables.Where(p => p.EmployeeID == employeeid);
@@ -34,6 +43,7 @@ namespace SchoolManagementSystem.Controllers
                 {
                     if (people.Count() > 0)
                     {
+                        Session["EmployeeResumeID"] = _resumeRepository.GetIdPerson(employeeid);
                         return RedirectToAction("CV", new { id = employeeid });
                     }
                     else
@@ -61,7 +71,7 @@ namespace SchoolManagementSystem.Controllers
 
 
         [HttpGet]
-        public ActionResult PersonnalInformtion(PersonVM model)
+        public ActionResult PersonnalInformtion(EmployeeResumeTableVM model)
         {
             //Nationality
             List<SelectListItem> nationality = new List<SelectListItem>()
@@ -88,27 +98,30 @@ namespace SchoolManagementSystem.Controllers
 
         [HttpPost]
         [ActionName("PersonnalInformtion")]
-        public ActionResult AddPersonnalInformtion(PersonVM person)
+        public ActionResult AddPersonnalInformtion(EmployeeResumeTableVM person)
         {
             var employeeid = 0;
             int.TryParse(Convert.ToString(Session["EmployeeID"]), out employeeid);
+            int userid = 0;
+            int.TryParse(Convert.ToString(Session["UserID"]), out userid);
 
             person.DateOfBirth = DateTime.Now;
 
             if (ModelState.IsValid)
             {
                 //Creating Mapping
-                Mapper.Initialize(cfg => cfg.CreateMap<PersonVM, Person>());
+                Mapper.Initialize(cfg => cfg.CreateMap<EmployeeResumeTableVM, EmployeeResumeTable>());
 
-                Person personEntity = Mapper.Map<Person>(person);
-                personEntity.EmpID = employeeid;
+                EmployeeResumeTable personEntity = Mapper.Map<EmployeeResumeTable>(person);
+                personEntity.EmployeeID = employeeid;
                 HttpPostedFileBase file = Request.Files["ImageProfil"];
 
                 bool result = _resumeRepository.AddPersonnalInformation(personEntity, file);
 
                 if (result)
                 {
-                    Session["IdSelected"] = _resumeRepository.GetIdPerson(person.FirstName, person.LastName);
+                   
+                    Session["EmployeeResumeID"] = _resumeRepository.GetIdPerson(employeeid);
                     return RedirectToAction("Education");
                 }
                 else
@@ -124,14 +137,25 @@ namespace SchoolManagementSystem.Controllers
 
         }
 
-        [HttpGet]
-        public ActionResult Education(EducationVM education)
+        public ActionResult OnlyEducation(int? id)
         {
+            Session["EmployeeResumeID"] = _resumeRepository.GetIdPerson((int)id);
+            if (Session["EmployeeResumeID"] == null)
+            {
+                return RedirectToAction("PersonnalInformtion");
+            }
+            return RedirectToAction("Education");
+        }
+
+        [HttpGet]
+        public ActionResult Education(EmployeeEducationTableVM education)
+        {
+            
             return View();
         }
 
         [HttpPost]
-        public ActionResult AddOrUpdateEducation(EducationVM education)
+        public ActionResult AddOrUpdateEducation(EmployeeEducationTableVM education)
         {
             try
             {
@@ -143,12 +167,15 @@ namespace SchoolManagementSystem.Controllers
                 {
                     //Creating Mapping
                     Mapper.Reset();
-                    Mapper.Initialize(cfg => cfg.CreateMap<EducationVM, Education>());
-                    Education educationEntity = Mapper.Map<Education>(education);
+                    Mapper.Initialize(cfg => cfg.CreateMap<EmployeeEducationTableVM, EmployeeEducationTable>());
+                    EmployeeEducationTable educationEntity = Mapper.Map<EmployeeEducationTable>(education);
+                    int userid = 0;
+                    int.TryParse(Convert.ToString(Session["UserID"]), out userid);
+                    educationEntity.UserID = userid;
 
-                    int idPer = (int)Session["IdSelected"];
+                    int EmployeeResumeID = (int)Session["EmployeeResumeID"];
 
-                    msg = _resumeRepository.AddOrUpdateEducation(educationEntity, idPer);
+                    msg = _resumeRepository.AddOrUpdateEducation(educationEntity, EmployeeResumeID);
 
                 }
                 else
@@ -166,12 +193,28 @@ namespace SchoolManagementSystem.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult EducationPartial(EducationVM education)
+        public PartialViewResult EducationPartial(EmployeeEducationTableVM education)
         {
 
             education.ListOfCountry = GetCountries();
+            education.ListOfCity = new List<SelectListItem>();
+            education.ListOfCity.Add(new SelectListItem() { Text = "Minya", Value = "Minya", Selected = true });
+            education.ListOfCity.Add(new SelectListItem() { Text = "Assuit", Value = "Assuit" });
+            education.ListOfCity.Add(new SelectListItem() { Text = "sharqiya", Value = "sharqiya" });
+            education.ListOfCity.Add(new SelectListItem() { Text = "banha", Value = "banha" });
 
             return PartialView("~/Views/Shared/_MyEducation.cshtml", education);
+        }
+
+
+        public ActionResult OnlyWorkExperience(int? id)
+        {
+            Session["EmployeeResumeID"] = _resumeRepository.GetIdPerson((int)id);
+            if (Session["EmployeeResumeID"] == null)
+            {
+                return RedirectToAction("PersonnalInformtion");
+            }
+            return RedirectToAction("WorkExperience");
         }
 
         [HttpGet]
@@ -180,14 +223,14 @@ namespace SchoolManagementSystem.Controllers
             return View();
         }
 
-        public PartialViewResult WorkExperiencePartial(WorkExperienceVM workExperience)
+        public PartialViewResult WorkExperiencePartial(EmployeeWorkExperienceVM workExperience)
         {
-            workExperience.ListeOfCountries = GetCountries();
+            workExperience.ListOfCountries = GetCountries();
 
             return PartialView("~/Views/Shared/_MyWorkExperience.cshtml", workExperience);
         }
 
-        public ActionResult AddOrUpdateExperience(WorkExperienceVM workExperience)
+        public ActionResult AddOrUpdateExperience(EmployeeWorkExperienceVM workExperience)
         {
 
             string msg = string.Empty;
@@ -196,13 +239,16 @@ namespace SchoolManagementSystem.Controllers
             {
                 //Creating Mapping
                 Mapper.Reset();
-                Mapper.Initialize(cfg => cfg.CreateMap<WorkExperienceVM, WorkExperience>());
-                WorkExperience workExperienceEntity = Mapper.Map<WorkExperience>(workExperience);
+                Mapper.Initialize(cfg => cfg.CreateMap<EmployeeWorkExperienceVM, WorkExperience>());
+                EmployeeWorkExperienceTable workExperienceEntity = Mapper.Map<EmployeeWorkExperienceTable>(workExperience);
 
-                int idPer = (int)Session["IdSelected"];
+                int EmployeeResumeID = (int)Session["EmployeeResumeID"];
+                int userid = 0;
+                int.TryParse(Convert.ToString(Session["UserID"]), out userid);
+                workExperience.UserID = userid;
+                workExperience.EmployeeResumeID = EmployeeResumeID;
 
-
-                msg = _resumeRepository.AddOrUpdateExperience(workExperienceEntity, idPer);
+                msg = _resumeRepository.AddOrUpdateExperience(workExperienceEntity, EmployeeResumeID);
 
             }
             else
@@ -211,6 +257,17 @@ namespace SchoolManagementSystem.Controllers
             }
 
             return Json(new { data = msg }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult OnlySkiCerfLang(int? id)
+        {
+            Session["EmployeeResumeID"] = _resumeRepository.GetIdPerson((int)id);
+            if (Session["EmployeeResumeID"] ==null)
+            {
+                return RedirectToAction("PersonnalInformtion");
+            }
+            return RedirectToAction("SkiCerfLang");
         }
 
         [HttpGet]
@@ -224,17 +281,20 @@ namespace SchoolManagementSystem.Controllers
             return PartialView("~/Views/Shared/_MySkills.cshtml");
         }
 
-        public ActionResult AddSkill(SkillsVM skill)
+        public ActionResult AddSkill(EmployeeSkillsVM skill)
         {
-            int idPer = (int)Session["IdSelected"];
+            int EmployeeResumeID = (int)Session["EmployeeResumeID"];
             string msg = string.Empty;
 
             //Creating Mapping
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<SkillsVM, Skill>());
-            Skill skillEntity = Mapper.Map<Skill>(skill);
+            Mapper.Initialize(cfg => cfg.CreateMap<EmployeeSkillsVM, EmployeeSkillTable>());
+            EmployeeSkillTable skillEntity = Mapper.Map<EmployeeSkillTable>(skill);
+            int userid = 0;
+            int.TryParse(Convert.ToString(Session["UserID"]), out userid);
+            skillEntity.UserID = userid;
 
-            if (_resumeRepository.AddSkill(skillEntity, idPer))
+            if (_resumeRepository.AddSkill(skillEntity, EmployeeResumeID))
             {
                 msg = "skill added successfully";
             }
@@ -246,7 +306,7 @@ namespace SchoolManagementSystem.Controllers
             return Json(new { data = msg }, JsonRequestBehavior.AllowGet);
         }
 
-        public PartialViewResult CertificationsPartial(CertificationVM certification)
+        public PartialViewResult CertificationsPartial(EmployeeCertificationVM certification)
         {
             List<SelectListItem> certificationLevel = new List<SelectListItem>()
             {
@@ -260,17 +320,22 @@ namespace SchoolManagementSystem.Controllers
             return PartialView("~/Views/Shared/_MyCertifications.cshtml", certification);
         }
 
-        public ActionResult AddCertification(CertificationVM certification)
+        public ActionResult AddCertification(EmployeeCertificationVM certification)
         {
-            int idPer = (int)Session["IdSelected"];
+            int EmployeeResumeID = (int)Session["EmployeeResumeID"];
             string msg = string.Empty;
 
             //Creating Mapping
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<CertificationVM, Certification>());
-            Certification certificationEntity = Mapper.Map<Certification>(certification);
+            Mapper.Initialize(cfg => cfg.CreateMap<EmployeeCertificationVM, EmployeeCertificationTable>());
+            EmployeeCertificationTable certificationEntity = Mapper.Map<EmployeeCertificationTable>(certification);
 
-            if (_resumeRepository.AddCertification(certificationEntity, idPer))
+
+            int userid = 0;
+            int.TryParse(Convert.ToString(Session["UserID"]), out userid);
+            certificationEntity.UserID = userid;
+
+            if (_resumeRepository.AddCertification(certificationEntity, EmployeeResumeID))
             {
                 msg = "Certification added successfully";
             }
@@ -282,7 +347,7 @@ namespace SchoolManagementSystem.Controllers
             return Json(new { data = msg }, JsonRequestBehavior.AllowGet);
         }
 
-        public PartialViewResult LanguagePartial(LanguageVM language)
+        public PartialViewResult LanguagePartial(EmployeeLanguageVM language)
         {
             List<SelectListItem> languageLevel = new List<SelectListItem>()
             {
@@ -298,17 +363,21 @@ namespace SchoolManagementSystem.Controllers
             return PartialView("~/Views/Shared/_MyLanguage.cshtml", language);
         }
 
-        public ActionResult AddLanguage(LanguageVM language)
+        public ActionResult AddLanguage(EmployeeLanguageVM language)
         {
-            int idPer = (int)Session["IdSelected"];
+            int EmployeeResumeID = (int)Session["EmployeeResumeID"];
             string msg = string.Empty;
 
             //Creating Mapping
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<LanguageVM, Language>());
-            Language languageEntity = Mapper.Map<Language>(language);
+            Mapper.Initialize(cfg => cfg.CreateMap<EmployeeLanguageVM, EmployeeLanguageTable>());
+            EmployeeLanguageTable languageEntity = Mapper.Map<EmployeeLanguageTable>(language);
 
-            if (_resumeRepository.AddLanguage(languageEntity, idPer))
+            int userid = 0;
+            int.TryParse(Convert.ToString(Session["UserID"]), out userid);
+            languageEntity.UserID = userid;
+
+            if (_resumeRepository.AddLanguage(languageEntity, EmployeeResumeID))
             {
                 msg = "Language added successfully";
             }
@@ -320,53 +389,52 @@ namespace SchoolManagementSystem.Controllers
             return Json(new { data = msg }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CV(int? id)
+        public ActionResult CV(int? EmployeeID)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            using (SchoolMgtSysDbEntities db = new SchoolMgtSysDbEntities())
             {
-                var person = db.People.Where(p => p.EmpID == id).FirstOrDefault();
-                id = person.IDPers;
+                EmployeeID = Convert.ToInt32(Session["EmployeeResumeID"]);
+                var person = db.EmployeeResumeTables.Where(p => p.EmployeeID ==EmployeeID).FirstOrDefault();
+                Session["EmployeeResumeID"] = person.EmployeeResumeID;
+                return View();
+
             }
 
-
-
-            Session["IdSelected"] = id;
-            return View();
         }
 
         public PartialViewResult GetPersonnalInfoPartial()
         {
-            int idPer = (int)Session["IdSelected"];
-            Person person = _resumeRepository.GetPersonnalInfo(idPer);
+            int EmployeeResumeID = (int)Session["EmployeeResumeID"];
+            EmployeeResumeTable person = _resumeRepository.GetPersonnalInfo(EmployeeResumeID);
 
             //Creating Mapping
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<Person, PersonVM>());
-            PersonVM personVM = Mapper.Map<PersonVM>(person);
+            Mapper.Initialize(cfg => cfg.CreateMap<EmployeeResumeTable, EmployeeResumeTableVM>());
+            EmployeeResumeTableVM personVM = Mapper.Map<EmployeeResumeTableVM>(person);
 
             return PartialView("~/Views/Shared/_MyPersonnalInfo.cshtml", personVM);
         }
 
         public PartialViewResult GetEducationCVPartial()
         {
-            int idPer = (int)Session["IdSelected"];
+            int EmployeeResumeID = (int)Session["EmployeeResumeID"];
 
             //Creating Mapping
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<Education, EducationVM>());
-            IQueryable<EducationVM> educationList = _resumeRepository.GetEducationById(idPer).ProjectTo<EducationVM>().AsQueryable();
+            Mapper.Initialize(cfg => cfg.CreateMap<EmployeeEducationTable, EmployeeEducationTableVM>());
+            IQueryable<EmployeeEducationTableVM> educationList = _resumeRepository.GetEducationById(EmployeeResumeID).ProjectTo<EmployeeEducationTableVM>().AsQueryable();
 
             return PartialView("~/Views/Shared/_MyEducationCV.cshtml", educationList);
         }
 
         public PartialViewResult WorkExperienceCVPartial()
         {
-            int idPer = (int)Session["IdSelected"];
+            int EmployeeResumeID = (int)Session["EmployeeResumeID"];
 
             //Creating Mapping
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<WorkExperience, WorkExperienceVM>());
-            IQueryable<WorkExperienceVM> workExperienceList = _resumeRepository.GetWorkExperienceById(idPer).ProjectTo<WorkExperienceVM>().AsQueryable();
+            Mapper.Initialize(cfg => cfg.CreateMap<EmployeeWorkExperienceTable, EmployeeWorkExperienceVM>());
+            IQueryable<EmployeeWorkExperienceVM> workExperienceList = _resumeRepository.GetWorkExperienceById(EmployeeResumeID).ProjectTo<EmployeeWorkExperienceVM>().AsQueryable();
 
 
             return PartialView("~/Views/Shared/_WorkExperienceCV.cshtml", workExperienceList);
@@ -374,12 +442,12 @@ namespace SchoolManagementSystem.Controllers
 
         public PartialViewResult SkillsCVPartial()
         {
-            int idPer = (int)Session["IdSelected"];
+            int EmployeeResumeID = (int)Session["EmployeeResumeID"];
 
             //Creating Mapping
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<Skill, SkillsVM>());
-            IQueryable<SkillsVM> skillsList = _resumeRepository.GetSkillsById(idPer).ProjectTo<SkillsVM>().AsQueryable();
+            Mapper.Initialize(cfg => cfg.CreateMap<EmployeeSkillTable, EmployeeSkillsVM>());
+            IQueryable<EmployeeSkillsVM> skillsList = _resumeRepository.GetSkillsById(EmployeeResumeID).ProjectTo<EmployeeSkillsVM>().AsQueryable();
 
 
             return PartialView("~/Views/Shared/_MySkillsCV.cshtml", skillsList);
@@ -387,12 +455,12 @@ namespace SchoolManagementSystem.Controllers
 
         public PartialViewResult CertificationsCVPartial()
         {
-            int idPer = (int)Session["IdSelected"];
+            int EmployeeResumeID = (int)Session["EmployeeResumeID"];
 
             //Creating Mapping
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<Certification, CertificationVM>());
-            IQueryable<CertificationVM> certificationList = _resumeRepository.GetCertificationsById(idPer).ProjectTo<CertificationVM>().AsQueryable();
+            Mapper.Initialize(cfg => cfg.CreateMap<EmployeeCertificationTable, EmployeeCertificationVM>());
+            IQueryable<EmployeeCertificationVM> certificationList = _resumeRepository.GetCertificationsById(EmployeeResumeID).ProjectTo<EmployeeCertificationVM>().AsQueryable();
 
 
             return PartialView("~/Views/Shared/_MyCertificationCV.cshtml", certificationList);
@@ -400,12 +468,12 @@ namespace SchoolManagementSystem.Controllers
 
         public PartialViewResult LanguageCVPartial()
         {
-            int idPer = (int)Session["IdSelected"];
+            int EmployeeResumeID = (int)Session["EmployeeResumeID"];
 
             //Creating Mapping
             Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<Language, LanguageVM>());
-            IQueryable<LanguageVM> languageList = _resumeRepository.GetLanguageById(idPer).ProjectTo<LanguageVM>().AsQueryable();
+            Mapper.Initialize(cfg => cfg.CreateMap<EmployeeLanguageTable, EmployeeLanguageVM>());
+            IQueryable<EmployeeLanguageVM> languageList = _resumeRepository.GetLanguageById(EmployeeResumeID).ProjectTo<EmployeeLanguageVM>().AsQueryable();
 
 
             return PartialView("~/Views/Shared/_MyLanguageCV.cshtml", languageList);
@@ -432,19 +500,18 @@ namespace SchoolManagementSystem.Controllers
 
             switch (country)
             {
-                case "Pakistan":
-                    listOfCities.Add(new SelectListItem() { Text = "KPK", Value = "KPK", Selected = true });
-                    listOfCities.Add(new SelectListItem() { Text = "Punjab", Value = "Punjab" });
-                    listOfCities.Add(new SelectListItem() { Text = "Sindh", Value = "Sindh" });
-                    listOfCities.Add(new SelectListItem() { Text = "Balochistan", Value = "Balochistan" });
+                case "Cairo":
+                    listOfCities.Add(new SelectListItem() { Text = "Minya", Value = "Minya", Selected = true });
+                    listOfCities.Add(new SelectListItem() { Text = "Assuit", Value = "Assuit" });
+                    listOfCities.Add(new SelectListItem() { Text = "sharqiya", Value = "sharqiya" });
+                    listOfCities.Add(new SelectListItem() { Text = "banha", Value = "banha" });
                     break;
 
-                case "India":
-                    listOfCities.Add(new SelectListItem() { Text = "Bombay", Value = "Bombay", Selected = true });
-                    listOfCities.Add(new SelectListItem() { Text = "Bangalore", Value = "Bangalore" });
-                    listOfCities.Add(new SelectListItem() { Text = "Chennai", Value = "Chennai" });
-                    listOfCities.Add(new SelectListItem() { Text = "Hyderabad", Value = "Hyderabad" });
-                    break;
+                //case "Assuit":
+                //    listOfCities.Add(new SelectListItem() { Text = "Assuit", Value = "Assuit", Selected = true });
+                //    listOfCities.Add(new SelectListItem() { Text = "Dayrot", Value = "Dayrot" });
+                //    listOfCities.Add(new SelectListItem() { Text = "Manfalout", Value = "Manfalout" });
+                //    break;
 
                 case "Spain":
                     listOfCities.Add(new SelectListItem() { Text = "Barcelone", Value = "Barcelone", Selected = true });
@@ -468,9 +535,8 @@ namespace SchoolManagementSystem.Controllers
         {
             List<SelectListItem> listOfCountry = new List<SelectListItem>()
             {
-                 new SelectListItem() { Text = "Pakistan", Value = "Pakistan", Selected = true},
+                 new SelectListItem() { Text = "Cairo", Value = "Cairo", Selected = true},
                 new SelectListItem() { Text = "Morocco", Value = "Morocco" },
-                new SelectListItem() { Text = "India", Value = "India"},
                 new SelectListItem() { Text = "Spain", Value = "Spain"},
                 new SelectListItem() { Text = "USA", Value = "USA"}
             };

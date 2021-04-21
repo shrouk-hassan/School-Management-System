@@ -86,13 +86,15 @@
                 <div id="collapseStudent" class="collapse" aria-labelledby="headingStudent" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Student Registration:</h6>
-                        @Html.ActionLink("Students", "Index", "StudentTables", null, new { @class = "collapse-item" })
+                        @Html.ActionLink("New Registration", "Create", "StudentTables", null, new { @class = "collapse-item" })
+                        @Html.ActionLink("Students List", "Index", "StudentTables", null, new { @class = "collapse-item" })
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Promotion:</h6>
-                        @Html.ActionLink("Student Promote List", "Index", "StudentPromoteTables", null, new { @class = "collapse-item" })
+                        @Html.ActionLink("Student Promote", "Create", "StudentPromoteTables", null, new { @class = "collapse-item" })
+                        @Html.ActionLink("Promote List", "Index", "StudentPromoteTables", null, new { @class = "collapse-item" })
                         <h6 class="collapse-header">Fee's:</h6>
                         @Html.ActionLink("Tution Fee", "Index", "SubmissionFeeTables", null, new { @class = "collapse-item" })
-                        @Html.ActionLink("Annual Fee", "Index", "StudentPromoteTables", null, new { @class = "collapse-item" })
+                        @Html.ActionLink("Annual Fee", "Index", "AnnualTables", null, new { @class = "collapse-item" })
                         <h6 class="collapse-header">Student Attendance:</h6>
                         @Html.ActionLink("Students Attendance", "Index", "AttendanceTables", null, new { @class = "collapse-item" })
                     </div>

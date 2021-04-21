@@ -21,7 +21,7 @@ namespace SchoolManagementSystem.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var studentTables = db.StudentTables.Include(s => s.ProgrameTable).Include(s => s.SessionTable).Include(s => s.UserTable);
+            var studentTables = db.StudentTables.Include(s => s.ProgrameTable).Include(s => s.SessionTable).Include(s => s.UserTable).OrderByDescending(s => s.StudentID);
             return View(studentTables.ToList());
         }
 
@@ -62,7 +62,7 @@ namespace SchoolManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( StudentTable studentTable)
+        public ActionResult Create(StudentTable studentTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
@@ -70,11 +70,25 @@ namespace SchoolManagementSystem.Controllers
             }
             int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
             studentTable.UserID = userid;
-
+            studentTable.Photo = "/Content/StudentPhoto/default.png";
             if (ModelState.IsValid)
             {
                 db.StudentTables.Add(studentTable);
                 db.SaveChanges();
+                if (studentTable.Photo != null)
+                {
+                    var folder = "/Content/StudentPhoto";
+                    var file = string.Format("{0}.png", studentTable.StudentID);
+                    var response = FileHelper.UploadFile.UploadPhoto(studentTable.PhotoFile, folder, file);
+                    if (response)
+                    {
+                        var pic = string.Format("{0}/{1}", folder, file);
+                        studentTable.Photo = pic;
+                        db.Entry(studentTable).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
 
@@ -111,7 +125,7 @@ namespace SchoolManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( StudentTable studentTable)
+        public ActionResult Edit(StudentTable studentTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
@@ -119,9 +133,20 @@ namespace SchoolManagementSystem.Controllers
             }
             int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
             studentTable.UserID = userid;
-
+            studentTable.Photo = "/Content/StudentPhoto/default.png";
             if (ModelState.IsValid)
             {
+                if (studentTable.Photo != null)
+                {
+                    var folder = "/Content/StudentPhoto";
+                    var file = string.Format("{0}.png", studentTable.StudentID);
+                    var response = FileHelper.UploadFile.UploadPhoto(studentTable.PhotoFile, folder, file);
+                    if (response)
+                    {
+                        var pic = string.Format("{0}/{1}", folder, file);
+                        studentTable.Photo = pic;
+                    }
+                }
                 db.Entry(studentTable).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -135,10 +160,6 @@ namespace SchoolManagementSystem.Controllers
         // GET: StudentTables/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -156,10 +177,6 @@ namespace SchoolManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             StudentTable studentTable = db.StudentTables.Find(id);
             db.StudentTables.Remove(studentTable);
             db.SaveChanges();

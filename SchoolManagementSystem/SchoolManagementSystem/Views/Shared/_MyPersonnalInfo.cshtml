@@ -1,9 +1,9 @@
-﻿@model SchoolManagementSystem.ViewModels.PersonVM
+﻿@model SchoolManagementSystem.ViewModels.EmployeeResumeTableVM
 
 <div class="panel panel-default">
     <div class="panel-body">
         <div id="Profil">
-            <img src="@Url.Action("GetProfilImage", "Resume", new { id = Model.IDPers})" alt="" class="img-circle" style="width: 125px; height: 142px; border: 3px solid #c1c1c1;" />
+            <img src="@Url.Action("GetProfilImage", "Resume", new { id = Model.EmployeeResumeID})" alt="" class="img-circle" style="width: 125px; height: 142px; border: 3px solid #c1c1c1;" />
             <h4 style="display: inline-block; margin-left: 20px;">@string.Format("{0}, {1}", Model.LastName, Model.FirstName)</h4>
         </div> <!-- END PROFIL -->
         <div id="container">

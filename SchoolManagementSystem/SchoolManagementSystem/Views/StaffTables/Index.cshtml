@@ -32,35 +32,39 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ContactNo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BasicSalary)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @if(!string.IsNullOrEmpty(item.Photo))
-            {
-                <img src="@Url.Content(item.Photo)" alt="Image" style="width:100px; height:150px; max-width:100%; height:auto;"/>
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td class="btn-group">
-            @Html.ActionLink("Edit", "Edit", new { id = item.StaffID }, new { @class="btn btn-primary"})
-            @Html.ActionLink("Details", "Details", new { id = item.StaffID }, new { @class = "btn btn-info" })
-            @Html.ActionLink("Add Resume", "Resume", new { id = item.StaffID }, new { @class = "btn btn-success" })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BasicSalary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.Photo))
+                {
+                    <img src="@Url.Content(item.Photo)" alt="Image" style="width:100px; height:150px; max-width:100%; height:auto;" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td class="btn-group">
+                @Html.ActionLink("Edit", "Edit", new { id = item.StaffID }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Details", "Details", new { id = item.StaffID }, new { @class = "btn btn-info" })
+                @Html.ActionLink("Add Resume", "CheckCV", "Resume", new { id = item.StaffID }, new { @class = "btn btn-success" })
+                @Html.ActionLink("Add Education", "OnlyEducation", "Resume", new { id = item.StaffID }, new { @class = "" })
+                @Html.ActionLink("Add Experience", "OnlyWorkExperience", "Resume", new { id = item.StaffID }, new { @class = "" })
+                @Html.ActionLink("Add Skills", "OnlySkiCerflang", "Resume", new { id = item.StaffID }, new { @class = "" })
+            </td>
+        </tr>
+    }
 
 </table>

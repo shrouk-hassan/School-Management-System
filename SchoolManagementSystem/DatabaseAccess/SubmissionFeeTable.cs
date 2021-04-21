@@ -11,16 +11,26 @@ namespace DatabaseAccess
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class SubmissionFeeTable
     {
         public int SubmissionFeeID { get; set; }
         public int UserID { get; set; }
+
+        [Required(ErrorMessage = "Please Select Class")]
         public int ClassID { get; set; }
+        [Required(ErrorMessage = "Please Select Student")]
         public int StudentID { get; set; }
+
+        [Required(ErrorMessage = "Please Enter Tution Fee")]
         public double Amount { get; set; }
+        [Required(ErrorMessage = "Please Select Program")]
         public int ProgrameID { get; set; }
+        [Required(ErrorMessage = "Please Select Tution Fee Submission Date")]
+        [DataType(DataType.Date)]
         public System.DateTime SubmissionDate { get; set; }
+        [Required(ErrorMessage = "Please Enter Fee Month")]
         public string FeesMonth { get; set; }
         public string Description { get; set; }
     
