@@ -1,15 +1,30 @@
 ﻿@model IEnumerable<DatabaseAccess.StudentTable>
-
 @{
-    ViewBag.Title = "Student";
+    ViewBag.Title = "Index";
 }
-
+@functions{
+    DatabaseAccess.SchoolMgtSysDbEntities db = new DatabaseAccess.SchoolMgtSysDbEntities();
+    public bool IsPromoted(int stID)
+    {
+        var data = (from s in db.StudentPromoteTables
+                    where s.StudentID == stID
+                    select new { ID = (s.StudentID) }).ToList();
+        if (data.Count > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
 <p>
-    @Html.ActionLink("New Registeration", "Create", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("New Registiration", "Create", null, new { @class = "btn btn-success" })
 </p>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">All Students</h6>
+        <h6 class="m-0 font-weight-bold text-primary">All Student</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -17,36 +32,51 @@
                 <thead>
                     <tr>
                         <th>
+                            Student ID
+                        </th>
+                        <th>
                             Student Name
                         </th>
                         <th>
                             Father Name
                         </th>
                         <th>
-                            Contact No
+                            Contact Number
                         </th>
+
                         <th>
                             Photo
                         </th>
                         <th>
+                            Class
+                        </th>
+                        <th>
                             User
                         </th>
+
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
+
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StudentID)
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.FatherName)
                             </td>
+
+
                             <td>
                                 @Html.DisplayFor(modelItem => item.ContactNo)
                             </td>
+
                             <td>
                                 @if (!string.IsNullOrEmpty(item.Photo))
                                 {
@@ -54,14 +84,37 @@
                                 }
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.UserTable.FullName)
+                                @Html.DisplayFor(modelItem => item.ClassTable.Name)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.StudentID }, new { @class = "btn btn-primary" })
-                                @Html.ActionLink("Details", "Details", new { id = item.StudentID }, new { @class = "btn btn-info" })
+                                @Html.DisplayFor(modelItem => item.UserTable.FullName)
+                            </td>
+
+                            <td class="btn-group">
+                                @*@Html.ActionLink("Time Table", "StudentReport", "#", new { id = item.StudentID }, new { @class = "btn btn-primary" })*@
+                                @Html.ActionLink("Edit", "Edit", new { id = item.StudentID }, new { @class = "btn btn-primary" }) &nbsp;
+                                @Html.ActionLink("Details", "Details", new { id = item.StudentID }, new { @class = "btn btn-info" }) &nbsp;
+                                @Html.ActionLink("Delete", "Delete", new { id = item.StudentID }, new { @class = "btn btn-danger" }) &nbsp;
+
+
+                                @{
+                                    if (IsPromoted(item.StudentID))
+                                    {
+                                        @Html.ActionLink("Leaving Certfication", "LeavingC", "StudentCertficateReport", new { id = item.StudentID }, new { @class = "btn btn-danger" }); @:&nbsp;
+                                        @Html.ActionLink("Character Certfication", "CharacterC", "StudentCertficateReport", new { id = item.StudentID }, new { @class = "btn btn-info" }); @:&nbsp;
+
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("Leaving Certfication", "LeavingC", "StudentCertficateReport", new { id = item.StudentID }, new { @class = "disabled btn btn-danger" }); @:&nbsp;
+                                        @Html.ActionLink("Character Certfication", "CharacterC", "StudentCertficateReport", new { id = item.StudentID }, new { @class = "disabled btn btn-info" }); @:&nbsp;
+                                    }
+                                }
                             </td>
                         </tr>
                     }
+
+
                 </tbody>
             </table>
         </div>

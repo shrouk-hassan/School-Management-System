@@ -41,9 +41,10 @@
                         
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                <img src="~/Content/Logo/schoolhouse-icon.png"/>
+                                @*<h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>*@
                             </div>
-                            <h3 class="alert-danger">@ViewBag.message</h3>
+                            <h5 class="alert-danger">@ViewBag.message</h5>
                             @using (Html.BeginForm("LoginUser", "Home", FormMethod.Post, new { @class = "form-horizontal user", role ="form", enctype = "multipart/form-data" }))
                             {
                                 @Html.AntiForgeryToken()

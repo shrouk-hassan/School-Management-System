@@ -197,9 +197,17 @@
             @Html.DisplayFor(model => model.UserTable.FullName)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassTable.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassTable.Name)
+        </dd>
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.StudentID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.StudentID }, new { @class="btn btn-success"}) &nbsp; &nbsp;
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" })
 </p>

@@ -11,27 +11,29 @@ namespace DatabaseAccess
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class SubjectTable
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SubjectTable()
         {
             this.ClassSubjectTables = new HashSet<ClassSubjectTable>();
-            this.ClassSubjectTables1 = new HashSet<ClassSubjectTable>();
+            this.tbl_category = new HashSet<tbl_category>();
         }
     
         public int SubjectID { get; set; }
         public int UserID { get; set; }
         public string Name { get; set; }
+        [DataType(DataType.Date)]
         public System.DateTime RegDate { get; set; }
         public string Description { get; set; }
         public int TotalMarks { get; set; }
     
+        public virtual UserTable UserTable { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ClassSubjectTable> ClassSubjectTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ClassSubjectTable> ClassSubjectTables1 { get; set; }
-        public virtual UserTable UserTable { get; set; }
+        public virtual ICollection<tbl_category> tbl_category { get; set; }
     }
 }

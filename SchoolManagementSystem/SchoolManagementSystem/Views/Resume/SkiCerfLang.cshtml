@@ -1,40 +1,79 @@
 ﻿@{
     ViewBag.Title = "Ski CerfLang";
-    Layout = "~/Views/Shared/_ResumeLayoutPage.cshmtl";
+    //Layout = "~/Views/Shared/_ResumeLayoutPage.cshmtl";
+    Layout = null;
 
 }
 
-<style type="text/css">
-    .row {
-        margin-bottom: 25px;
-    }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Generator</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style type="text/css">
+        .field-validation-error {
+            background-color: #e85555;
+            color: white;
+            padding: 2px 9px;
+            border-radius: 9px;
+            font-size: 12px;
+        }
+        .row {
+            margin-bottom: 25px;
+        }
 
-    .container {
-        margin-top: -53px;
-    }
+        .container {
+            margin-top: -53px;
+        }
 
-    .IcoTitle {
-        border: 3px solid #e0e0e0;
-        display: inline-block;
-        width: 70px;
-        height: 70px;
-        border-radius: 100%;
-        background-color: #2e6da4;
-    }
-</style>
+        .IcoTitle {
+            border: 3px solid #e0e0e0;
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            border-radius: 100%;
+            background-color: #2e6da4;
+        }
+    </style>
+</head>
+<body class="container">
 
-<div class="container">
-    @{Html.RenderAction("SkillsPartial", "Resume"); }
+    <div class="container body-content">
 
-    @{Html.RenderAction("CertificationsPartial", "Resume"); }
+        @*<style type="text/css">
+            .row {
+                margin-bottom: 25px;
+            }
 
-    @{Html.RenderAction("LanguagePartial", "Resume"); }
-</div>
-<div>
-    @{Html.RenderAction("Back to Deshboard", "Index", "EmployeeDeshboard"); }
-</div>
-@section script{
-    <script type="text/javascript">
+            .container {
+                margin-top: -53px;
+            }
+
+            .IcoTitle {
+                border: 3px solid #e0e0e0;
+                display: inline-block;
+                width: 70px;
+                height: 70px;
+                border-radius: 100%;
+                background-color: #2e6da4;
+            }
+        </style>*@
+
+        <div class="container">
+            @{Html.RenderAction("SkillsPartial", "Resume"); }
+
+            @{Html.RenderAction("CertificationsPartial", "Resume"); }
+
+            @{Html.RenderAction("LanguagePartial", "Resume"); }
+        </div>
+        <div>
+            @*@{Html.RenderAction("Back to Deshboard", "Index", "EmployeeDeshboard"); }*@
+        </div>
+        @section script{
+            <script type="text/javascript">
             $(document).ready(function () {
                 $('#AddSkill').change(function () {
                     var skill = {
@@ -83,6 +122,24 @@
                             }
                 });
 
-    </script>
-    @Scripts.Render("~/bundles/jqueryval")
-}
+            </script>
+            @Scripts.Render("~/bundles/jqueryval")
+        }
+
+        <hr />
+        <footer>
+            <p>Design by M&R&SH</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@RenderSection("scripts", required: false)*@
+
+    <script type="text/javascript">
+                $(function () {
+            $('#datetimepicker1').datetimepicker();
+            $('#datetimepicker2').datetimepicker();
+        });</script>
+
+</body>
+</html>

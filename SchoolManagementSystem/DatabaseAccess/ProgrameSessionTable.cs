@@ -11,7 +11,8 @@ namespace DatabaseAccess
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class ProgrameSessionTable
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,6 +26,7 @@ namespace DatabaseAccess
         public int SessionID { get; set; }
         public int ProgrameID { get; set; }
         public string Details { get; set; }
+        [DataType(DataType.Date)]
         public System.DateTime RegDate { get; set; }
         public string Description { get; set; }
     

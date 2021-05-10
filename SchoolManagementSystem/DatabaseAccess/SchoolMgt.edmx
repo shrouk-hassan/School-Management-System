@@ -23,7 +23,7 @@
           </Key>
           <Property Name="AttendanceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SessionID" Type="int" Nullable="false" />
-          <Property Name="Student_ID" Type="int" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
           <Property Name="AttendDate" Type="datetime" Nullable="false" />
           <Property Name="AttendTime" Type="time" Precision="7" Nullable="false" />
           <Property Name="ClassID" Type="int" Nullable="false" />
@@ -34,9 +34,9 @@
           </Key>
           <Property Name="ClassSubjectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClassID" Type="int" Nullable="false" />
-          <Property Name="SubjectID" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IsActive" Type="bit" />
+          <Property Name="SubjectID" Type="int" />
         </EntityType>
         <EntityType Name="ClassTable">
           <Key>
@@ -195,6 +195,25 @@
           <Property Name="EndDate" Type="date" Nullable="false" />
           <Property Name="Descrption" Type="varchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="ExpensesTable">
+          <Key>
+            <PropertyRef Name="ExpensesID" />
+          </Key>
+          <Property Name="ExpensesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExpensesTypeID" Type="int" Nullable="false" />
+          <Property Name="ExpensesDate" Type="date" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExpenseTypeTable">
+          <Key>
+            <PropertyRef Name="ExpensesTypeID" />
+          </Key>
+          <Property Name="ExpensesTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="ProgrameSessionTable">
           <Key>
             <PropertyRef Name="ProgrameSessionID" />
@@ -271,9 +290,9 @@
           <Property Name="EmailAddress" Type="varchar" MaxLength="100" />
           <Property Name="Address" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Qualification" Type="varchar" MaxLength="500" Nullable="false" />
-          <Property Name="Photo" Type="varchar(max)" />
+          <Property Name="Photo" Type="varchar(max)" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="500" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
           <Property Name="Gender" Type="nvarchar" MaxLength="50" />
           <Property Name="HomePhone" Type="nvarchar" MaxLength="50" />
           <Property Name="Doyouhaveanydiability" Type="bit" Nullable="false" />
@@ -306,6 +325,7 @@
           <Property Name="SessionID" Type="int" Nullable="false" />
           <Property Name="ProgrameID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="FatherName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="DateofBirth" Type="date" Nullable="false" />
@@ -362,6 +382,58 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
+        <EntityType Name="TBL_ADMIN">
+          <Key>
+            <PropertyRef Name="AD_ID" />
+          </Key>
+          <Property Name="AD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AD_NAME" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="AD_PASSWARD" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_category">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cat_name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="cat_fk_adid" Type="int" />
+          <Property Name="cat_encyptedstring" Type="nvarchar(max)" />
+          <Property Name="TotalMark" Type="int" />
+          <Property Name="SubjectID" Type="int" />
+        </EntityType>
+        <EntityType Name="TBL_QUESTIONS">
+          <Key>
+            <PropertyRef Name="QUESTION_ID" />
+          </Key>
+          <Property Name="QUESTION_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Q_TEXT" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="OPA" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="OPB" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="OPC" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="OPD" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="COP" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="q_fk_catid" Type="int" />
+        </EntityType>
+        <EntityType Name="TBL_Scoe">
+          <Key>
+            <PropertyRef Name="ScoreID" />
+          </Key>
+          <Property Name="ScoreID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cat_id" Type="int" />
+          <Property Name="StudentID" Type="int" />
+          <Property Name="ObtainMark" Type="int" />
+          <Property Name="Date" Type="date" />
+        </EntityType>
+        <EntityType Name="TBL_SETEXAM">
+          <Key>
+            <PropertyRef Name="EXAM_ID" />
+          </Key>
+          <Property Name="EXAM_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EXAM_TDATE" Type="datetime" />
+          <Property Name="EXAM_FK_STD" Type="int" />
+          <Property Name="EXAM_NAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="STD_SCORE" Type="int" />
+        </EntityType>
         <EntityType Name="TimeTblTable">
           <Key>
             <PropertyRef Name="TimeTableID" />
@@ -373,7 +445,6 @@
           <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
           <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
           <Property Name="Day" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="ClassID" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="ClassSubjectID" Type="int" Nullable="false" />
         </EntityType>
@@ -418,6 +489,66 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <Property Name="EmailAddress" Type="varchar" MaxLength="100" />
           <Property Name="Address" Type="varchar" MaxLength="200" />
         </EntityType>
+        <Association Name="FK__tbl_categ__cat_f__5C02A283">
+          <End Role="TBL_ADMIN" Type="Self.TBL_ADMIN" Multiplicity="0..1" />
+          <End Role="tbl_category" Type="Self.tbl_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBL_ADMIN">
+              <PropertyRef Name="AD_ID" />
+            </Principal>
+            <Dependent Role="tbl_category">
+              <PropertyRef Name="cat_fk_adid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TBL_QUEST__q_fk___5CF6C6BC">
+          <End Role="tbl_category" Type="Self.tbl_category" Multiplicity="0..1" />
+          <End Role="TBL_QUESTIONS" Type="Self.TBL_QUESTIONS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_category">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="TBL_QUESTIONS">
+              <PropertyRef Name="q_fk_catid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TBL_Scoe__cat_id__5FD33367">
+          <End Role="tbl_category" Type="Self.tbl_category" Multiplicity="0..1" />
+          <End Role="TBL_Scoe" Type="Self.TBL_Scoe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_category">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="TBL_Scoe">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TBL_Scoe__Studen__60C757A0">
+          <End Role="StudentTable" Type="Self.StudentTable" Multiplicity="0..1" />
+          <End Role="TBL_Scoe" Type="Self.TBL_Scoe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentTable">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="TBL_Scoe">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TBL_SETEX__EXAM___5555A4F4">
+          <End Role="StudentTable" Type="Self.StudentTable" Multiplicity="0..1" />
+          <End Role="TBL_SETEXAM" Type="Self.TBL_SETEXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentTable">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="TBL_SETEXAM">
+              <PropertyRef Name="EXAM_FK_STD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AnnualTable_ProgrameTable">
           <End Role="ProgrameTable" Type="Self.ProgrameTable" Multiplicity="1" />
           <End Role="AnnualTable" Type="Self.AnnualTable" Multiplicity="*" />
@@ -454,6 +585,18 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AttendanceTable_SessionTable">
+          <End Role="SessionTable" Type="Self.SessionTable" Multiplicity="1" />
+          <End Role="AttendanceTable" Type="Self.AttendanceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SessionTable">
+              <PropertyRef Name="SessionID" />
+            </Principal>
+            <Dependent Role="AttendanceTable">
+              <PropertyRef Name="SessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AttendanceTable_StudentTable">
           <End Role="StudentTable" Type="Self.StudentTable" Multiplicity="1" />
           <End Role="AttendanceTable" Type="Self.AttendanceTable" Multiplicity="*" />
@@ -479,19 +622,7 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ClassSubjectTable_SubjectTable">
-          <End Role="SubjectTable" Type="Self.SubjectTable" Multiplicity="1" />
-          <End Role="ClassSubjectTable" Type="Self.ClassSubjectTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubjectTable">
-              <PropertyRef Name="SubjectID" />
-            </Principal>
-            <Dependent Role="ClassSubjectTable">
-              <PropertyRef Name="SubjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ClassSubjectTable_SubjectTable1">
-          <End Role="SubjectTable" Type="Self.SubjectTable" Multiplicity="1" />
+          <End Role="SubjectTable" Type="Self.SubjectTable" Multiplicity="0..1" />
           <End Role="ClassSubjectTable" Type="Self.ClassSubjectTable" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubjectTable">
@@ -694,6 +825,18 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ExamMarksTable_ClassSubjectTable">
+          <End Role="ClassSubjectTable" Type="Self.ClassSubjectTable" Multiplicity="1" />
+          <End Role="ExamMarksTable" Type="Self.ExamMarksTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassSubjectTable">
+              <PropertyRef Name="ClassSubjectID" />
+            </Principal>
+            <Dependent Role="ExamMarksTable">
+              <PropertyRef Name="ClassSubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ExamMarksTable_ExamTable">
           <End Role="ExamTable" Type="Self.ExamTable" Multiplicity="1" />
           <End Role="ExamMarksTable" Type="Self.ExamMarksTable" Multiplicity="*" />
@@ -738,6 +881,30 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="ExamTable">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExpensesTable_ExpenseTypeTable">
+          <End Role="ExpenseTypeTable" Type="Self.ExpenseTypeTable" Multiplicity="1" />
+          <End Role="ExpensesTable" Type="Self.ExpensesTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpenseTypeTable">
+              <PropertyRef Name="ExpensesTypeID" />
+            </Principal>
+            <Dependent Role="ExpensesTable">
+              <PropertyRef Name="ExpensesTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExpensesTable_UserTable">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
+          <End Role="ExpensesTable" Type="Self.ExpensesTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ExpensesTable">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -874,18 +1041,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_StaffTable_DesignationTable1">
-          <End Role="DesignationTable" Type="Self.DesignationTable" Multiplicity="1" />
-          <End Role="StaffTable" Type="Self.StaffTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DesignationTable">
-              <PropertyRef Name="DesignationID" />
-            </Principal>
-            <Dependent Role="StaffTable">
-              <PropertyRef Name="DesignationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_StaffTable_UserTable">
           <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
           <End Role="StaffTable" Type="Self.StaffTable" Multiplicity="*" />
@@ -943,6 +1098,18 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Principal>
             <Dependent Role="StudentPromoteTable">
               <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentTable_ClassTable">
+          <End Role="ClassTable" Type="Self.ClassTable" Multiplicity="1" />
+          <End Role="StudentTable" Type="Self.StudentTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassTable">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="StudentTable">
+              <PropertyRef Name="ClassID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1042,6 +1209,18 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tbl_category_SubjectTable">
+          <End Role="SubjectTable" Type="Self.SubjectTable" Multiplicity="0..1" />
+          <End Role="tbl_category" Type="Self.tbl_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubjectTable">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="tbl_category">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TimeTblTable_ClassSubjectTable">
           <End Role="ClassSubjectTable" Type="Self.ClassSubjectTable" Multiplicity="1" />
           <End Role="TimeTblTable" Type="Self.TimeTblTable" Multiplicity="*" />
@@ -1107,6 +1286,8 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <EntitySet Name="EventTable" EntityType="Self.EventTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExamMarksTable" EntityType="Self.ExamMarksTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExamTable" EntityType="Self.ExamTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpensesTable" EntityType="Self.ExpensesTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpenseTypeTable" EntityType="Self.ExpenseTypeTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProgrameSessionTable" EntityType="Self.ProgrameSessionTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProgrameTable" EntityType="Self.ProgrameTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SchoolLeavingTable" EntityType="Self.SchoolLeavingTable" Schema="dbo" store:Type="Tables" />
@@ -1119,6 +1300,11 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <EntitySet Name="SubjectTable" EntityType="Self.SubjectTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubmissionFeeTable" EntityType="Self.SubmissionFeeTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_ADMIN" EntityType="Self.TBL_ADMIN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_category" EntityType="Self.tbl_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_QUESTIONS" EntityType="Self.TBL_QUESTIONS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_Scoe" EntityType="Self.TBL_Scoe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_SETEXAM" EntityType="Self.TBL_SETEXAM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TimeTblTable" EntityType="Self.TimeTblTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTypeTable" EntityType="Self.UserTypeTable" Schema="dbo" store:Type="Tables" />
@@ -1134,6 +1320,26 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
     [v_AllUsers].[Address] AS [Address]
     FROM [dbo].[v_AllUsers] AS [v_AllUsers]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK__tbl_categ__cat_f__5C02A283" Association="Self.FK__tbl_categ__cat_f__5C02A283">
+            <End Role="TBL_ADMIN" EntitySet="TBL_ADMIN" />
+            <End Role="tbl_category" EntitySet="tbl_category" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TBL_QUEST__q_fk___5CF6C6BC" Association="Self.FK__TBL_QUEST__q_fk___5CF6C6BC">
+            <End Role="tbl_category" EntitySet="tbl_category" />
+            <End Role="TBL_QUESTIONS" EntitySet="TBL_QUESTIONS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TBL_Scoe__cat_id__5FD33367" Association="Self.FK__TBL_Scoe__cat_id__5FD33367">
+            <End Role="tbl_category" EntitySet="tbl_category" />
+            <End Role="TBL_Scoe" EntitySet="TBL_Scoe" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TBL_Scoe__Studen__60C757A0" Association="Self.FK__TBL_Scoe__Studen__60C757A0">
+            <End Role="StudentTable" EntitySet="StudentTable" />
+            <End Role="TBL_Scoe" EntitySet="TBL_Scoe" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TBL_SETEX__EXAM___5555A4F4" Association="Self.FK__TBL_SETEX__EXAM___5555A4F4">
+            <End Role="StudentTable" EntitySet="StudentTable" />
+            <End Role="TBL_SETEXAM" EntitySet="TBL_SETEXAM" />
+          </AssociationSet>
           <AssociationSet Name="FK_AnnualTable_ProgrameTable" Association="Self.FK_AnnualTable_ProgrameTable">
             <End Role="ProgrameTable" EntitySet="ProgrameTable" />
             <End Role="AnnualTable" EntitySet="AnnualTable" />
@@ -1146,6 +1352,10 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             <End Role="ClassTable" EntitySet="ClassTable" />
             <End Role="AttendanceTable" EntitySet="AttendanceTable" />
           </AssociationSet>
+          <AssociationSet Name="FK_AttendanceTable_SessionTable" Association="Self.FK_AttendanceTable_SessionTable">
+            <End Role="SessionTable" EntitySet="SessionTable" />
+            <End Role="AttendanceTable" EntitySet="AttendanceTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_AttendanceTable_StudentTable" Association="Self.FK_AttendanceTable_StudentTable">
             <End Role="StudentTable" EntitySet="StudentTable" />
             <End Role="AttendanceTable" EntitySet="AttendanceTable" />
@@ -1155,10 +1365,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             <End Role="ClassSubjectTable" EntitySet="ClassSubjectTable" />
           </AssociationSet>
           <AssociationSet Name="FK_ClassSubjectTable_SubjectTable" Association="Self.FK_ClassSubjectTable_SubjectTable">
-            <End Role="SubjectTable" EntitySet="SubjectTable" />
-            <End Role="ClassSubjectTable" EntitySet="ClassSubjectTable" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ClassSubjectTable_SubjectTable1" Association="Self.FK_ClassSubjectTable_SubjectTable1">
             <End Role="SubjectTable" EntitySet="SubjectTable" />
             <End Role="ClassSubjectTable" EntitySet="ClassSubjectTable" />
           </AssociationSet>
@@ -1226,6 +1432,10 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             <End Role="UserTable" EntitySet="UserTable" />
             <End Role="EventTable" EntitySet="EventTable" />
           </AssociationSet>
+          <AssociationSet Name="FK_ExamMarksTable_ClassSubjectTable" Association="Self.FK_ExamMarksTable_ClassSubjectTable">
+            <End Role="ClassSubjectTable" EntitySet="ClassSubjectTable" />
+            <End Role="ExamMarksTable" EntitySet="ExamMarksTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_ExamMarksTable_ExamTable" Association="Self.FK_ExamMarksTable_ExamTable">
             <End Role="ExamTable" EntitySet="ExamTable" />
             <End Role="ExamMarksTable" EntitySet="ExamMarksTable" />
@@ -1241,6 +1451,14 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <AssociationSet Name="FK_ExamTable_UserTable" Association="Self.FK_ExamTable_UserTable">
             <End Role="UserTable" EntitySet="UserTable" />
             <End Role="ExamTable" EntitySet="ExamTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExpensesTable_ExpenseTypeTable" Association="Self.FK_ExpensesTable_ExpenseTypeTable">
+            <End Role="ExpenseTypeTable" EntitySet="ExpenseTypeTable" />
+            <End Role="ExpensesTable" EntitySet="ExpensesTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExpensesTable_UserTable" Association="Self.FK_ExpensesTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="ExpensesTable" EntitySet="ExpensesTable" />
           </AssociationSet>
           <AssociationSet Name="FK_ProgrameSessionTable_ProgrameTable" Association="Self.FK_ProgrameSessionTable_ProgrameTable">
             <End Role="ProgrameTable" EntitySet="ProgrameTable" />
@@ -1286,10 +1504,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             <End Role="DesignationTable" EntitySet="DesignationTable" />
             <End Role="StaffTable" EntitySet="StaffTable" />
           </AssociationSet>
-          <AssociationSet Name="FK_StaffTable_DesignationTable1" Association="Self.FK_StaffTable_DesignationTable1">
-            <End Role="DesignationTable" EntitySet="DesignationTable" />
-            <End Role="StaffTable" EntitySet="StaffTable" />
-          </AssociationSet>
           <AssociationSet Name="FK_StaffTable_UserTable" Association="Self.FK_StaffTable_UserTable">
             <End Role="UserTable" EntitySet="UserTable" />
             <End Role="StaffTable" EntitySet="StaffTable" />
@@ -1309,6 +1523,10 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <AssociationSet Name="FK_StudentPromoteTable_StudentTable" Association="Self.FK_StudentPromoteTable_StudentTable">
             <End Role="StudentTable" EntitySet="StudentTable" />
             <End Role="StudentPromoteTable" EntitySet="StudentPromoteTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentTable_ClassTable" Association="Self.FK_StudentTable_ClassTable">
+            <End Role="ClassTable" EntitySet="ClassTable" />
+            <End Role="StudentTable" EntitySet="StudentTable" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentTable_ProgrameTable" Association="Self.FK_StudentTable_ProgrameTable">
             <End Role="ProgrameTable" EntitySet="ProgrameTable" />
@@ -1341,6 +1559,10 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <AssociationSet Name="FK_SubmissionFeeTable_UserTable" Association="Self.FK_SubmissionFeeTable_UserTable">
             <End Role="UserTable" EntitySet="UserTable" />
             <End Role="SubmissionFeeTable" EntitySet="SubmissionFeeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_category_SubjectTable" Association="Self.FK_tbl_category_SubjectTable">
+            <End Role="SubjectTable" EntitySet="SubjectTable" />
+            <End Role="tbl_category" EntitySet="tbl_category" />
           </AssociationSet>
           <AssociationSet Name="FK_TimeTblTable_ClassSubjectTable" Association="Self.FK_TimeTblTable_ClassSubjectTable">
             <End Role="ClassSubjectTable" EntitySet="ClassSubjectTable" />
@@ -1377,33 +1599,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <NavigationProperty Name="ProgrameTable" Relationship="Self.FK_AnnualTable_ProgrameTable" FromRole="AnnualTable" ToRole="ProgrameTable" />
           <NavigationProperty Name="UserTable" Relationship="Self.FK_AnnualTable_UserTable" FromRole="AnnualTable" ToRole="UserTable" />
         </EntityType>
-        <EntityType Name="AttendanceTable">
-          <Key>
-            <PropertyRef Name="AttendanceID" />
-          </Key>
-          <Property Name="AttendanceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SessionID" Type="Int32" Nullable="false" />
-          <Property Name="Student_ID" Type="Int32" Nullable="false" />
-          <Property Name="AttendDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AttendTime" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="ClassID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ClassTable" Relationship="Self.FK_AttendanceTable_ClassTable" FromRole="AttendanceTable" ToRole="ClassTable" />
-          <NavigationProperty Name="StudentTable" Relationship="SchoolMgtSysDbModel.FK_AttendanceTable_StudentTable" FromRole="AttendanceTable" ToRole="StudentTable" />
-        </EntityType>
-        <EntityType Name="ClassSubjectTable">
-          <Key>
-            <PropertyRef Name="ClassSubjectID" />
-          </Key>
-          <Property Name="ClassSubjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClassID" Type="Int32" Nullable="false" />
-          <Property Name="SubjectID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="ClassTable" Relationship="Self.FK_ClassSubjectTable_ClassTable" FromRole="ClassSubjectTable" ToRole="ClassTable" />
-          <NavigationProperty Name="SubjectTable" Relationship="Self.FK_ClassSubjectTable_SubjectTable" FromRole="ClassSubjectTable" ToRole="SubjectTable" />
-          <NavigationProperty Name="SubjectTable1" Relationship="Self.FK_ClassSubjectTable_SubjectTable1" FromRole="ClassSubjectTable" ToRole="SubjectTable" />
-          <NavigationProperty Name="TimeTblTables" Relationship="Self.FK_TimeTblTable_ClassSubjectTable" FromRole="ClassSubjectTable" ToRole="TimeTblTable" />
-        </EntityType>
         <EntityType Name="ClassTable">
           <Key>
             <PropertyRef Name="ClassID" />
@@ -1411,10 +1606,11 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <Property Name="ClassID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="AttendanceTables" Relationship="Self.FK_AttendanceTable_ClassTable" FromRole="ClassTable" ToRole="AttendanceTable" />
-          <NavigationProperty Name="ClassSubjectTables" Relationship="Self.FK_ClassSubjectTable_ClassTable" FromRole="ClassTable" ToRole="ClassSubjectTable" />
           <NavigationProperty Name="StudentPromoteTables" Relationship="Self.FK_StudentPromoteTable_ClassTable" FromRole="ClassTable" ToRole="StudentPromoteTable" />
           <NavigationProperty Name="SubmissionFeeTables" Relationship="Self.FK_SubmissionFeeTable_ClassTable" FromRole="ClassTable" ToRole="SubmissionFeeTable" />
+          <NavigationProperty Name="StudentTables" Relationship="SchoolMgtSysDbModel.FK_StudentTable_ClassTable" FromRole="ClassTable" ToRole="StudentTable" />
+          <NavigationProperty Name="AttendanceTables" Relationship="SchoolMgtSysDbModel.FK_AttendanceTable_ClassTable" FromRole="ClassTable" ToRole="AttendanceTable" />
+          <NavigationProperty Name="ClassSubjectTables" Relationship="SchoolMgtSysDbModel.FK_ClassSubjectTable_ClassTable" FromRole="ClassTable" ToRole="ClassSubjectTable" />
         </EntityType>
         <EntityType Name="DesignationTable">
           <Key>
@@ -1565,21 +1761,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="UserTable" Relationship="Self.FK_EventTable_UserTable" FromRole="EventTable" ToRole="UserTable" />
         </EntityType>
-        <EntityType Name="ExamMarksTable">
-          <Key>
-            <PropertyRef Name="MarksID" />
-          </Key>
-          <Property Name="MarksID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StudentID" Type="Int32" Nullable="false" />
-          <Property Name="ClassSubjectID" Type="Int32" Nullable="false" />
-          <Property Name="ExamID" Type="Int32" Nullable="false" />
-          <Property Name="TotalMarks" Type="Int32" Nullable="false" />
-          <Property Name="ObtainMarks" Type="Int32" Nullable="false" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ExamTable" Relationship="Self.FK_ExamMarksTable_ExamTable" FromRole="ExamMarksTable" ToRole="ExamTable" />
-          <NavigationProperty Name="UserTable" Relationship="Self.FK_ExamMarksTable_UserTable" FromRole="ExamMarksTable" ToRole="UserTable" />
-          <NavigationProperty Name="StudentTable" Relationship="SchoolMgtSysDbModel.FK_ExamMarksTable_StudentTable" FromRole="ExamMarksTable" ToRole="StudentTable" />
-        </EntityType>
         <EntityType Name="ExamTable">
           <Key>
             <PropertyRef Name="ExamID" />
@@ -1590,8 +1771,8 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Descrption" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ExamMarksTables" Relationship="Self.FK_ExamMarksTable_ExamTable" FromRole="ExamTable" ToRole="ExamMarksTable" />
           <NavigationProperty Name="UserTable" Relationship="Self.FK_ExamTable_UserTable" FromRole="ExamTable" ToRole="UserTable" />
+          <NavigationProperty Name="ExamMarksTables" Relationship="SchoolMgtSysDbModel.FK_ExamMarksTable_ExamTable" FromRole="ExamTable" ToRole="ExamMarksTable" />
         </EntityType>
         <EntityType Name="ProgrameSessionTable">
           <Key>
@@ -1663,6 +1844,7 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <NavigationProperty Name="ProgrameSessionTables" Relationship="Self.FK_ProgrameSessionTable_SessionTable" FromRole="SessionTable" ToRole="ProgrameSessionTable" />
           <NavigationProperty Name="UserTable" Relationship="Self.FK_SessionTable_UserTable" FromRole="SessionTable" ToRole="UserTable" />
           <NavigationProperty Name="StudentTables" Relationship="SchoolMgtSysDbModel.FK_StudentTable_SessionTable" FromRole="SessionTable" ToRole="StudentTable" />
+          <NavigationProperty Name="AttendanceTables" Relationship="SchoolMgtSysDbModel.FK_AttendanceTable_SessionTable" FromRole="SessionTable" ToRole="AttendanceTable" />
         </EntityType>
         <EntityType Name="StaffAttendanceTable">
           <Key>
@@ -1703,9 +1885,9 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <Property Name="RegDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Description" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
           <Property Name="TotalMarks" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ClassSubjectTables" Relationship="Self.FK_ClassSubjectTable_SubjectTable" FromRole="SubjectTable" ToRole="ClassSubjectTable" />
-          <NavigationProperty Name="ClassSubjectTables1" Relationship="Self.FK_ClassSubjectTable_SubjectTable1" FromRole="SubjectTable" ToRole="ClassSubjectTable" />
           <NavigationProperty Name="UserTable" Relationship="Self.FK_SubjectTable_UserTable" FromRole="SubjectTable" ToRole="UserTable" />
+          <NavigationProperty Name="ClassSubjectTables" Relationship="SchoolMgtSysDbModel.FK_ClassSubjectTable_SubjectTable" FromRole="SubjectTable" ToRole="ClassSubjectTable" />
+          <NavigationProperty Name="tbl_category" Relationship="SchoolMgtSysDbModel.FK_tbl_category_SubjectTable" FromRole="SubjectTable" ToRole="tbl_category" />
         </EntityType>
         <EntityType Name="SubmissionFeeTable">
           <Key>
@@ -1735,24 +1917,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityType Name="TimeTblTable">
-          <Key>
-            <PropertyRef Name="TimeTableID" />
-          </Key>
-          <Property Name="TimeTableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="SubjectID" Type="Int32" Nullable="false" />
-          <Property Name="StaffID" Type="Int32" Nullable="false" />
-          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="Day" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ClassID" Type="Int32" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="ClassSubjectID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ClassSubjectTable" Relationship="Self.FK_TimeTblTable_ClassSubjectTable" FromRole="TimeTblTable" ToRole="ClassSubjectTable" />
-          <NavigationProperty Name="UserTable" Relationship="Self.FK_TimeTblTable_UserTable" FromRole="TimeTblTable" ToRole="UserTable" />
-          <NavigationProperty Name="StaffTable" Relationship="SchoolMgtSysDbModel.FK_TimeTblTable_StaffTable" FromRole="TimeTblTable" ToRole="StaffTable" />
-        </EntityType>
         <EntityType Name="UserTable">
           <Key>
             <PropertyRef Name="UserID" />
@@ -1775,7 +1939,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <NavigationProperty Name="EmployeeSkillTables" Relationship="Self.FK_EmployeeSkillTable_UserTable" FromRole="UserTable" ToRole="EmployeeSkillTable" />
           <NavigationProperty Name="EmployeeWorkExperienceTables" Relationship="Self.FK_EmployeeWorkExperienceTable_UserTable" FromRole="UserTable" ToRole="EmployeeWorkExperienceTable" />
           <NavigationProperty Name="EventTable" Relationship="Self.FK_EventTable_UserTable" FromRole="UserTable" ToRole="EventTable" />
-          <NavigationProperty Name="ExamMarksTables" Relationship="Self.FK_ExamMarksTable_UserTable" FromRole="UserTable" ToRole="ExamMarksTable" />
           <NavigationProperty Name="ExamTables" Relationship="Self.FK_ExamTable_UserTable" FromRole="UserTable" ToRole="ExamTable" />
           <NavigationProperty Name="ProgrameSessionTables" Relationship="Self.FK_ProgrameSessionTable_UserTable" FromRole="UserTable" ToRole="ProgrameSessionTable" />
           <NavigationProperty Name="ProgrameTables" Relationship="Self.FK_ProgrameTable_UserTable" FromRole="UserTable" ToRole="ProgrameTable" />
@@ -1784,10 +1947,12 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <NavigationProperty Name="SessionTables" Relationship="Self.FK_SessionTable_UserTable" FromRole="UserTable" ToRole="SessionTable" />
           <NavigationProperty Name="SubjectTables" Relationship="Self.FK_SubjectTable_UserTable" FromRole="UserTable" ToRole="SubjectTable" />
           <NavigationProperty Name="SubmissionFeeTables" Relationship="Self.FK_SubmissionFeeTable_UserTable" FromRole="UserTable" ToRole="SubmissionFeeTable" />
-          <NavigationProperty Name="TimeTblTables" Relationship="Self.FK_TimeTblTable_UserTable" FromRole="UserTable" ToRole="TimeTblTable" />
           <NavigationProperty Name="UserTypeTable" Relationship="Self.FK_UserTable_UserTypeTable" FromRole="UserTable" ToRole="UserTypeTable" />
           <NavigationProperty Name="StaffTables" Relationship="SchoolMgtSysDbModel.FK_StaffTable_UserTable" FromRole="UserTable" ToRole="StaffTable" />
           <NavigationProperty Name="StudentTables" Relationship="SchoolMgtSysDbModel.FK_StudentTable_UserTable" FromRole="UserTable" ToRole="StudentTable" />
+          <NavigationProperty Name="ExamMarksTables" Relationship="SchoolMgtSysDbModel.FK_ExamMarksTable_UserTable" FromRole="UserTable" ToRole="ExamMarksTable" />
+          <NavigationProperty Name="TimeTblTables" Relationship="SchoolMgtSysDbModel.FK_TimeTblTable_UserTable" FromRole="UserTable" ToRole="TimeTblTable" />
+          <NavigationProperty Name="ExpensesTables" Relationship="SchoolMgtSysDbModel.FK_ExpensesTable_UserTable" FromRole="UserTable" ToRole="ExpensesTable" />
         </EntityType>
         <EntityType Name="UserTypeTable">
           <Key>
@@ -1837,66 +2002,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Principal>
             <Dependent Role="AnnualTable">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AttendanceTable_ClassTable">
-          <End Role="ClassTable" Type="Self.ClassTable" Multiplicity="1" />
-          <End Role="AttendanceTable" Type="Self.AttendanceTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ClassTable">
-              <PropertyRef Name="ClassID" />
-            </Principal>
-            <Dependent Role="AttendanceTable">
-              <PropertyRef Name="ClassID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ClassSubjectTable_ClassTable">
-          <End Role="ClassTable" Type="Self.ClassTable" Multiplicity="1" />
-          <End Role="ClassSubjectTable" Type="Self.ClassSubjectTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ClassTable">
-              <PropertyRef Name="ClassID" />
-            </Principal>
-            <Dependent Role="ClassSubjectTable">
-              <PropertyRef Name="ClassID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ClassSubjectTable_SubjectTable">
-          <End Role="SubjectTable" Type="Self.SubjectTable" Multiplicity="1" />
-          <End Role="ClassSubjectTable" Type="Self.ClassSubjectTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubjectTable">
-              <PropertyRef Name="SubjectID" />
-            </Principal>
-            <Dependent Role="ClassSubjectTable">
-              <PropertyRef Name="SubjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ClassSubjectTable_SubjectTable1">
-          <End Role="SubjectTable" Type="Self.SubjectTable" Multiplicity="1" />
-          <End Role="ClassSubjectTable" Type="Self.ClassSubjectTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubjectTable">
-              <PropertyRef Name="SubjectID" />
-            </Principal>
-            <Dependent Role="ClassSubjectTable">
-              <PropertyRef Name="SubjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TimeTblTable_ClassSubjectTable">
-          <End Role="ClassSubjectTable" Type="Self.ClassSubjectTable" Multiplicity="1" />
-          <End Role="TimeTblTable" Type="Self.TimeTblTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ClassSubjectTable">
-              <PropertyRef Name="ClassSubjectID" />
-            </Principal>
-            <Dependent Role="TimeTblTable">
-              <PropertyRef Name="ClassSubjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2092,30 +2197,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ExamMarksTable_ExamTable">
-          <End Role="ExamTable" Type="Self.ExamTable" Multiplicity="1" />
-          <End Role="ExamMarksTable" Type="Self.ExamMarksTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ExamTable">
-              <PropertyRef Name="ExamID" />
-            </Principal>
-            <Dependent Role="ExamMarksTable">
-              <PropertyRef Name="ExamID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ExamMarksTable_UserTable">
-          <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
-          <End Role="ExamMarksTable" Type="Self.ExamMarksTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTable">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="ExamMarksTable">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ExamTable_UserTable">
           <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
           <End Role="ExamTable" Type="Self.ExamTable" Multiplicity="*" />
@@ -2284,18 +2365,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TimeTblTable_UserTable">
-          <End Role="UserTable" Type="Self.UserTable" Multiplicity="1" />
-          <End Role="TimeTblTable" Type="Self.TimeTblTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTable">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="TimeTblTable">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserTable_UserTypeTable">
           <End Role="UserTypeTable" Type="Self.UserTypeTable" Multiplicity="1" />
           <End Role="UserTable" Type="Self.UserTable" Multiplicity="*" />
@@ -2310,8 +2379,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
         </Association>
         <EntityContainer Name="SchoolMgtSysDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AnnualTables" EntityType="Self.AnnualTable" />
-          <EntitySet Name="AttendanceTables" EntityType="Self.AttendanceTable" />
-          <EntitySet Name="ClassSubjectTables" EntityType="Self.ClassSubjectTable" />
           <EntitySet Name="ClassTables" EntityType="Self.ClassTable" />
           <EntitySet Name="DesignationTables" EntityType="Self.DesignationTable" />
           <EntitySet Name="EmployeeCertificationTables" EntityType="Self.EmployeeCertificationTable" />
@@ -2323,7 +2390,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <EntitySet Name="EmployeeSkillTables" EntityType="Self.EmployeeSkillTable" />
           <EntitySet Name="EmployeeWorkExperienceTables" EntityType="Self.EmployeeWorkExperienceTable" />
           <EntitySet Name="EventTables" EntityType="Self.EventTable" />
-          <EntitySet Name="ExamMarksTables" EntityType="Self.ExamMarksTable" />
           <EntitySet Name="ExamTables" EntityType="Self.ExamTable" />
           <EntitySet Name="ProgrameSessionTables" EntityType="Self.ProgrameSessionTable" />
           <EntitySet Name="ProgrameTables" EntityType="Self.ProgrameTable" />
@@ -2335,7 +2401,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <EntitySet Name="SubjectTables" EntityType="Self.SubjectTable" />
           <EntitySet Name="SubmissionFeeTables" EntityType="Self.SubmissionFeeTable" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="TimeTblTables" EntityType="Self.TimeTblTable" />
           <EntitySet Name="UserTables" EntityType="Self.UserTable" />
           <EntitySet Name="UserTypeTables" EntityType="Self.UserTypeTable" />
           <EntitySet Name="v_AllUsers" EntityType="Self.v_AllUsers" />
@@ -2346,26 +2411,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <AssociationSet Name="FK_AnnualTable_UserTable" Association="Self.FK_AnnualTable_UserTable">
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="AnnualTable" EntitySet="AnnualTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AttendanceTable_ClassTable" Association="Self.FK_AttendanceTable_ClassTable">
-            <End Role="ClassTable" EntitySet="ClassTables" />
-            <End Role="AttendanceTable" EntitySet="AttendanceTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ClassSubjectTable_ClassTable" Association="Self.FK_ClassSubjectTable_ClassTable">
-            <End Role="ClassTable" EntitySet="ClassTables" />
-            <End Role="ClassSubjectTable" EntitySet="ClassSubjectTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ClassSubjectTable_SubjectTable" Association="Self.FK_ClassSubjectTable_SubjectTable">
-            <End Role="SubjectTable" EntitySet="SubjectTables" />
-            <End Role="ClassSubjectTable" EntitySet="ClassSubjectTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ClassSubjectTable_SubjectTable1" Association="Self.FK_ClassSubjectTable_SubjectTable1">
-            <End Role="SubjectTable" EntitySet="SubjectTables" />
-            <End Role="ClassSubjectTable" EntitySet="ClassSubjectTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TimeTblTable_ClassSubjectTable" Association="Self.FK_TimeTblTable_ClassSubjectTable">
-            <End Role="ClassSubjectTable" EntitySet="ClassSubjectTables" />
-            <End Role="TimeTblTable" EntitySet="TimeTblTables" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentPromoteTable_ClassTable" Association="Self.FK_StudentPromoteTable_ClassTable">
             <End Role="ClassTable" EntitySet="ClassTables" />
@@ -2431,14 +2476,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="EventTable" EntitySet="EventTables" />
           </AssociationSet>
-          <AssociationSet Name="FK_ExamMarksTable_ExamTable" Association="Self.FK_ExamMarksTable_ExamTable">
-            <End Role="ExamTable" EntitySet="ExamTables" />
-            <End Role="ExamMarksTable" EntitySet="ExamMarksTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ExamMarksTable_UserTable" Association="Self.FK_ExamMarksTable_UserTable">
-            <End Role="UserTable" EntitySet="UserTables" />
-            <End Role="ExamMarksTable" EntitySet="ExamMarksTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_ExamTable_UserTable" Association="Self.FK_ExamTable_UserTable">
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="ExamTable" EntitySet="ExamTables" />
@@ -2495,10 +2532,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="SubmissionFeeTable" EntitySet="SubmissionFeeTables" />
           </AssociationSet>
-          <AssociationSet Name="FK_TimeTblTable_UserTable" Association="Self.FK_TimeTblTable_UserTable">
-            <End Role="UserTable" EntitySet="UserTables" />
-            <End Role="TimeTblTable" EntitySet="TimeTblTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserTable_UserTypeTable" Association="Self.FK_UserTable_UserTypeTable">
             <End Role="UserTypeTable" EntitySet="UserTypeTables" />
             <End Role="UserTable" EntitySet="UserTables" />
@@ -2528,42 +2561,125 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="StaffTable" EntitySet="StaffTables" />
           </AssociationSet>
-          <AssociationSet Name="FK_TimeTblTable_StaffTable" Association="SchoolMgtSysDbModel.FK_TimeTblTable_StaffTable">
-            <End Role="StaffTable" EntitySet="StaffTables" />
-            <End Role="TimeTblTable" EntitySet="TimeTblTables" />
-          </AssociationSet>
           <EntitySet Name="StudentTables" EntityType="SchoolMgtSysDbModel.StudentTable" />
-          <AssociationSet Name="FK_AttendanceTable_StudentTable" Association="SchoolMgtSysDbModel.FK_AttendanceTable_StudentTable">
-            <End Role="StudentTable" EntitySet="StudentTables" />
-            <End Role="AttendanceTable" EntitySet="AttendanceTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ExamMarksTable_StudentTable" Association="SchoolMgtSysDbModel.FK_ExamMarksTable_StudentTable">
-            <End Role="StudentTable" EntitySet="StudentTables" />
-            <End Role="ExamMarksTable" EntitySet="ExamMarksTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_StudentTable_ProgrameTable" Association="SchoolMgtSysDbModel.FK_StudentTable_ProgrameTable">
-            <End Role="ProgrameTable" EntitySet="ProgrameTables" />
+          <AssociationSet Name="FK_StudentTable_ClassTable" Association="SchoolMgtSysDbModel.FK_StudentTable_ClassTable">
+            <End Role="ClassTable" EntitySet="ClassTables" />
             <End Role="StudentTable" EntitySet="StudentTables" />
           </AssociationSet>
           <AssociationSet Name="FK_SchoolLeavingTable_StudentTable" Association="SchoolMgtSysDbModel.FK_SchoolLeavingTable_StudentTable">
             <End Role="StudentTable" EntitySet="StudentTables" />
             <End Role="SchoolLeavingTable" EntitySet="SchoolLeavingTables" />
           </AssociationSet>
-          <AssociationSet Name="FK_StudentTable_SessionTable" Association="SchoolMgtSysDbModel.FK_StudentTable_SessionTable">
-            <End Role="SessionTable" EntitySet="SessionTables" />
-            <End Role="StudentTable" EntitySet="StudentTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_StudentPromoteTable_StudentTable" Association="SchoolMgtSysDbModel.FK_StudentPromoteTable_StudentTable">
             <End Role="StudentTable" EntitySet="StudentTables" />
             <End Role="StudentPromoteTable" EntitySet="StudentPromoteTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubmissionFeeTable_StudentTable" Association="SchoolMgtSysDbModel.FK_SubmissionFeeTable_StudentTable">
+            <End Role="StudentTable" EntitySet="StudentTables" />
+            <End Role="SubmissionFeeTable" EntitySet="SubmissionFeeTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentTable_ProgrameTable" Association="SchoolMgtSysDbModel.FK_StudentTable_ProgrameTable">
+            <End Role="ProgrameTable" EntitySet="ProgrameTables" />
+            <End Role="StudentTable" EntitySet="StudentTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentTable_SessionTable" Association="SchoolMgtSysDbModel.FK_StudentTable_SessionTable">
+            <End Role="SessionTable" EntitySet="SessionTables" />
+            <End Role="StudentTable" EntitySet="StudentTables" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentTable_UserTable" Association="SchoolMgtSysDbModel.FK_StudentTable_UserTable">
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="StudentTable" EntitySet="StudentTables" />
           </AssociationSet>
-          <AssociationSet Name="FK_SubmissionFeeTable_StudentTable" Association="SchoolMgtSysDbModel.FK_SubmissionFeeTable_StudentTable">
+          <EntitySet Name="ExamMarksTables" EntityType="SchoolMgtSysDbModel.ExamMarksTable" />
+          <AssociationSet Name="FK_ExamMarksTable_StudentTable" Association="SchoolMgtSysDbModel.FK_ExamMarksTable_StudentTable">
             <End Role="StudentTable" EntitySet="StudentTables" />
-            <End Role="SubmissionFeeTable" EntitySet="SubmissionFeeTables" />
+            <End Role="ExamMarksTable" EntitySet="ExamMarksTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExamMarksTable_UserTable" Association="SchoolMgtSysDbModel.FK_ExamMarksTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="ExamMarksTable" EntitySet="ExamMarksTables" />
+          </AssociationSet>
+          <EntitySet Name="AttendanceTables" EntityType="SchoolMgtSysDbModel.AttendanceTable" />
+          <AssociationSet Name="FK_AttendanceTable_ClassTable" Association="SchoolMgtSysDbModel.FK_AttendanceTable_ClassTable">
+            <End Role="ClassTable" EntitySet="ClassTables" />
+            <End Role="AttendanceTable" EntitySet="AttendanceTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttendanceTable_SessionTable" Association="SchoolMgtSysDbModel.FK_AttendanceTable_SessionTable">
+            <End Role="SessionTable" EntitySet="SessionTables" />
+            <End Role="AttendanceTable" EntitySet="AttendanceTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttendanceTable_StudentTable" Association="SchoolMgtSysDbModel.FK_AttendanceTable_StudentTable">
+            <End Role="StudentTable" EntitySet="StudentTables" />
+            <End Role="AttendanceTable" EntitySet="AttendanceTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExamMarksTable_ExamTable" Association="SchoolMgtSysDbModel.FK_ExamMarksTable_ExamTable">
+            <End Role="ExamTable" EntitySet="ExamTables" />
+            <End Role="ExamMarksTable" EntitySet="ExamMarksTables" />
+          </AssociationSet>
+          <EntitySet Name="TimeTblTables" EntityType="SchoolMgtSysDbModel.TimeTblTable" />
+          <AssociationSet Name="FK_TimeTblTable_StaffTable" Association="SchoolMgtSysDbModel.FK_TimeTblTable_StaffTable">
+            <End Role="StaffTable" EntitySet="StaffTables" />
+            <End Role="TimeTblTable" EntitySet="TimeTblTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTblTable_UserTable" Association="SchoolMgtSysDbModel.FK_TimeTblTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="TimeTblTable" EntitySet="TimeTblTables" />
+          </AssociationSet>
+          <EntitySet Name="ExpensesTables" EntityType="SchoolMgtSysDbModel.ExpensesTable" />
+          <EntitySet Name="ExpenseTypeTables" EntityType="SchoolMgtSysDbModel.ExpenseTypeTable" />
+          <AssociationSet Name="FK_ExpensesTable_ExpenseTypeTable" Association="SchoolMgtSysDbModel.FK_ExpensesTable_ExpenseTypeTable">
+            <End Role="ExpenseTypeTable" EntitySet="ExpenseTypeTables" />
+            <End Role="ExpensesTable" EntitySet="ExpensesTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExpensesTable_UserTable" Association="SchoolMgtSysDbModel.FK_ExpensesTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="ExpensesTable" EntitySet="ExpensesTables" />
+          </AssociationSet>
+          <EntitySet Name="TBL_ADMIN" EntityType="SchoolMgtSysDbModel.TBL_ADMIN" />
+          <EntitySet Name="TBL_QUESTIONS" EntityType="SchoolMgtSysDbModel.TBL_QUESTIONS" />
+          <EntitySet Name="TBL_SETEXAM" EntityType="SchoolMgtSysDbModel.TBL_SETEXAM" />
+          <AssociationSet Name="FK__TBL_SETEX__EXAM___5555A4F4" Association="SchoolMgtSysDbModel.FK__TBL_SETEX__EXAM___5555A4F4">
+            <End Role="StudentTable" EntitySet="StudentTables" />
+            <End Role="TBL_SETEXAM" EntitySet="TBL_SETEXAM" />
+          </AssociationSet>
+          <EntitySet Name="TBL_Scoe" EntityType="SchoolMgtSysDbModel.TBL_Scoe" />
+          <AssociationSet Name="FK__TBL_Scoe__Studen__60C757A0" Association="SchoolMgtSysDbModel.FK__TBL_Scoe__Studen__60C757A0">
+            <End Role="StudentTable" EntitySet="StudentTables" />
+            <End Role="TBL_Scoe" EntitySet="TBL_Scoe" />
+          </AssociationSet>
+          <EntitySet Name="tbl_category" EntityType="SchoolMgtSysDbModel.tbl_category" />
+          <AssociationSet Name="FK__tbl_categ__cat_f__5C02A283" Association="SchoolMgtSysDbModel.FK__tbl_categ__cat_f__5C02A283">
+            <End Role="TBL_ADMIN" EntitySet="TBL_ADMIN" />
+            <End Role="tbl_category" EntitySet="tbl_category" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TBL_QUEST__q_fk___5CF6C6BC" Association="SchoolMgtSysDbModel.FK__TBL_QUEST__q_fk___5CF6C6BC">
+            <End Role="tbl_category" EntitySet="tbl_category" />
+            <End Role="TBL_QUESTIONS" EntitySet="TBL_QUESTIONS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TBL_Scoe__cat_id__72E607DB" Association="SchoolMgtSysDbModel.FK__TBL_Scoe__cat_id__72E607DB">
+            <End Role="tbl_category" EntitySet="tbl_category" />
+            <End Role="TBL_Scoe" EntitySet="TBL_Scoe" />
+          </AssociationSet>
+          <EntitySet Name="ClassSubjectTables" EntityType="SchoolMgtSysDbModel.ClassSubjectTable" />
+          <AssociationSet Name="FK_ClassSubjectTable_ClassTable" Association="SchoolMgtSysDbModel.FK_ClassSubjectTable_ClassTable">
+            <End Role="ClassTable" EntitySet="ClassTables" />
+            <End Role="ClassSubjectTable" EntitySet="ClassSubjectTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassSubjectTable_SubjectTable" Association="SchoolMgtSysDbModel.FK_ClassSubjectTable_SubjectTable">
+            <End Role="SubjectTable" EntitySet="SubjectTables" />
+            <End Role="ClassSubjectTable" EntitySet="ClassSubjectTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExamMarksTable_ClassSubjectTable" Association="SchoolMgtSysDbModel.FK_ExamMarksTable_ClassSubjectTable">
+            <End Role="ClassSubjectTable" EntitySet="ClassSubjectTables" />
+            <End Role="ExamMarksTable" EntitySet="ExamMarksTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTblTable_ClassSubjectTable" Association="SchoolMgtSysDbModel.FK_TimeTblTable_ClassSubjectTable">
+            <End Role="ClassSubjectTable" EntitySet="ClassSubjectTables" />
+            <End Role="TimeTblTable" EntitySet="TimeTblTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_category_SubjectTable" Association="SchoolMgtSysDbModel.FK_tbl_category_SubjectTable">
+            <End Role="SubjectTable" EntitySet="SubjectTables" />
+            <End Role="tbl_category" EntitySet="tbl_category" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="StaffTable">
@@ -2579,9 +2695,9 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <Property Name="EmailAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Qualification" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
           <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="HomePhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Doyouhaveanydiability" Type="Boolean" Nullable="false" />
@@ -2671,26 +2787,15 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TimeTblTable_StaffTable">
-          <End Type="SchoolMgtSysDbModel.StaffTable" Role="StaffTable" Multiplicity="1" />
-          <End Type="SchoolMgtSysDbModel.TimeTblTable" Role="TimeTblTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StaffTable">
-              <PropertyRef Name="StaffID" />
-            </Principal>
-            <Dependent Role="TimeTblTable">
-              <PropertyRef Name="StaffID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="StudentTable">
           <Key>
             <PropertyRef Name="StudentID" />
           </Key>
-          <Property Name="StudentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
           <Property Name="SessionID" Type="Int32" Nullable="false" />
           <Property Name="ProgrameID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FatherName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DateofBirth" Type="DateTime" Nullable="false" Precision="0" />
@@ -2711,35 +2816,62 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
           <Property Name="FathersGuardinasPostalAdress" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="PhoneOffice" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PhoneResident" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AttendanceTables" Relationship="SchoolMgtSysDbModel.FK_AttendanceTable_StudentTable" FromRole="StudentTable" ToRole="AttendanceTable" />
-          <NavigationProperty Name="ExamMarksTables" Relationship="SchoolMgtSysDbModel.FK_ExamMarksTable_StudentTable" FromRole="StudentTable" ToRole="ExamMarksTable" />
-          <NavigationProperty Name="ProgrameTable" Relationship="SchoolMgtSysDbModel.FK_StudentTable_ProgrameTable" FromRole="StudentTable" ToRole="ProgrameTable" />
+          <NavigationProperty Name="ClassTable" Relationship="SchoolMgtSysDbModel.FK_StudentTable_ClassTable" FromRole="StudentTable" ToRole="ClassTable" />
           <NavigationProperty Name="SchoolLeavingTables" Relationship="SchoolMgtSysDbModel.FK_SchoolLeavingTable_StudentTable" FromRole="StudentTable" ToRole="SchoolLeavingTable" />
-          <NavigationProperty Name="SessionTable" Relationship="SchoolMgtSysDbModel.FK_StudentTable_SessionTable" FromRole="StudentTable" ToRole="SessionTable" />
           <NavigationProperty Name="StudentPromoteTables" Relationship="SchoolMgtSysDbModel.FK_StudentPromoteTable_StudentTable" FromRole="StudentTable" ToRole="StudentPromoteTable" />
-          <NavigationProperty Name="UserTable" Relationship="SchoolMgtSysDbModel.FK_StudentTable_UserTable" FromRole="StudentTable" ToRole="UserTable" />
           <NavigationProperty Name="SubmissionFeeTables" Relationship="SchoolMgtSysDbModel.FK_SubmissionFeeTable_StudentTable" FromRole="StudentTable" ToRole="SubmissionFeeTable" />
+          <NavigationProperty Name="ProgrameTable" Relationship="SchoolMgtSysDbModel.FK_StudentTable_ProgrameTable" FromRole="StudentTable" ToRole="ProgrameTable" />
+          <NavigationProperty Name="SessionTable" Relationship="SchoolMgtSysDbModel.FK_StudentTable_SessionTable" FromRole="StudentTable" ToRole="SessionTable" />
+          <NavigationProperty Name="UserTable" Relationship="SchoolMgtSysDbModel.FK_StudentTable_UserTable" FromRole="StudentTable" ToRole="UserTable" />
+          <NavigationProperty Name="ExamMarksTables" Relationship="SchoolMgtSysDbModel.FK_ExamMarksTable_StudentTable" FromRole="StudentTable" ToRole="ExamMarksTable" />
+          <NavigationProperty Name="AttendanceTables" Relationship="SchoolMgtSysDbModel.FK_AttendanceTable_StudentTable" FromRole="StudentTable" ToRole="AttendanceTable" />
+          <NavigationProperty Name="TBL_SETEXAM" Relationship="SchoolMgtSysDbModel.FK__TBL_SETEX__EXAM___5555A4F4" FromRole="StudentTable" ToRole="TBL_SETEXAM" />
+          <NavigationProperty Name="TBL_Scoe" Relationship="SchoolMgtSysDbModel.FK__TBL_Scoe__Studen__60C757A0" FromRole="StudentTable" ToRole="TBL_Scoe" />
         </EntityType>
-        <Association Name="FK_AttendanceTable_StudentTable">
-          <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="1" />
-          <End Type="SchoolMgtSysDbModel.AttendanceTable" Role="AttendanceTable" Multiplicity="*" />
+        <Association Name="FK_StudentTable_ClassTable">
+          <End Type="SchoolMgtSysDbModel.ClassTable" Role="ClassTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="StudentTable">
-              <PropertyRef Name="StudentID" />
+            <Principal Role="ClassTable">
+              <PropertyRef Name="ClassID" />
             </Principal>
-            <Dependent Role="AttendanceTable">
-              <PropertyRef Name="SessionID" />
+            <Dependent Role="StudentTable">
+              <PropertyRef Name="ClassID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ExamMarksTable_StudentTable">
+        <Association Name="FK_SchoolLeavingTable_StudentTable">
           <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="1" />
-          <End Type="SchoolMgtSysDbModel.ExamMarksTable" Role="ExamMarksTable" Multiplicity="*" />
+          <End Type="SchoolMgtSysDbModel.SchoolLeavingTable" Role="SchoolLeavingTable" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="StudentTable">
               <PropertyRef Name="StudentID" />
             </Principal>
-            <Dependent Role="ExamMarksTable">
+            <Dependent Role="SchoolLeavingTable">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentPromoteTable_StudentTable">
+          <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.StudentPromoteTable" Role="StudentPromoteTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentTable">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="StudentPromoteTable">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubmissionFeeTable_StudentTable">
+          <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.SubmissionFeeTable" Role="SubmissionFeeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentTable">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="SubmissionFeeTable">
               <PropertyRef Name="StudentID" />
             </Dependent>
           </ReferentialConstraint>
@@ -2756,18 +2888,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SchoolLeavingTable_StudentTable">
-          <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="1" />
-          <End Type="SchoolMgtSysDbModel.SchoolLeavingTable" Role="SchoolLeavingTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StudentTable">
-              <PropertyRef Name="StudentID" />
-            </Principal>
-            <Dependent Role="SchoolLeavingTable">
-              <PropertyRef Name="StudentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_StudentTable_SessionTable">
           <End Type="SchoolMgtSysDbModel.SessionTable" Role="SessionTable" Multiplicity="1" />
           <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="*" />
@@ -2777,18 +2897,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Principal>
             <Dependent Role="StudentTable">
               <PropertyRef Name="SessionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_StudentPromoteTable_StudentTable">
-          <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="1" />
-          <End Type="SchoolMgtSysDbModel.StudentPromoteTable" Role="StudentPromoteTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StudentTable">
-              <PropertyRef Name="StudentID" />
-            </Principal>
-            <Dependent Role="StudentPromoteTable">
-              <PropertyRef Name="StudentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2804,15 +2912,387 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SubmissionFeeTable_StudentTable">
+        <EntityType Name="ExamMarksTable">
+          <Key>
+            <PropertyRef Name="MarksID" />
+          </Key>
+          <Property Name="MarksID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="ClassSubjectID" Type="Int32" Nullable="false" />
+          <Property Name="ExamID" Type="Int32" Nullable="false" />
+          <Property Name="TotalMarks" Type="Int32" Nullable="false" />
+          <Property Name="ObtainMarks" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="StudentTable" Relationship="SchoolMgtSysDbModel.FK_ExamMarksTable_StudentTable" FromRole="ExamMarksTable" ToRole="StudentTable" />
+          <NavigationProperty Name="UserTable" Relationship="SchoolMgtSysDbModel.FK_ExamMarksTable_UserTable" FromRole="ExamMarksTable" ToRole="UserTable" />
+          <NavigationProperty Name="ExamTable" Relationship="SchoolMgtSysDbModel.FK_ExamMarksTable_ExamTable" FromRole="ExamMarksTable" ToRole="ExamTable" />
+          <NavigationProperty Name="ClassSubjectTable" Relationship="SchoolMgtSysDbModel.FK_ExamMarksTable_ClassSubjectTable" FromRole="ExamMarksTable" ToRole="ClassSubjectTable" />
+        </EntityType>
+        <Association Name="FK_ExamMarksTable_StudentTable">
           <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="1" />
-          <End Type="SchoolMgtSysDbModel.SubmissionFeeTable" Role="SubmissionFeeTable" Multiplicity="*" />
+          <End Type="SchoolMgtSysDbModel.ExamMarksTable" Role="ExamMarksTable" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="StudentTable">
               <PropertyRef Name="StudentID" />
             </Principal>
-            <Dependent Role="SubmissionFeeTable">
+            <Dependent Role="ExamMarksTable">
               <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExamMarksTable_UserTable">
+          <End Type="SchoolMgtSysDbModel.UserTable" Role="UserTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.ExamMarksTable" Role="ExamMarksTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ExamMarksTable">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AttendanceTable">
+          <Key>
+            <PropertyRef Name="AttendanceID" />
+          </Key>
+          <Property Name="AttendanceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SessionID" Type="Int32" Nullable="false" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="AttendDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AttendTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ClassTable" Relationship="SchoolMgtSysDbModel.FK_AttendanceTable_ClassTable" FromRole="AttendanceTable" ToRole="ClassTable" />
+          <NavigationProperty Name="SessionTable" Relationship="SchoolMgtSysDbModel.FK_AttendanceTable_SessionTable" FromRole="AttendanceTable" ToRole="SessionTable" />
+          <NavigationProperty Name="StudentTable" Relationship="SchoolMgtSysDbModel.FK_AttendanceTable_StudentTable" FromRole="AttendanceTable" ToRole="StudentTable" />
+        </EntityType>
+        <Association Name="FK_AttendanceTable_ClassTable">
+          <End Type="SchoolMgtSysDbModel.ClassTable" Role="ClassTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.AttendanceTable" Role="AttendanceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassTable">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="AttendanceTable">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttendanceTable_SessionTable">
+          <End Type="SchoolMgtSysDbModel.SessionTable" Role="SessionTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.AttendanceTable" Role="AttendanceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SessionTable">
+              <PropertyRef Name="SessionID" />
+            </Principal>
+            <Dependent Role="AttendanceTable">
+              <PropertyRef Name="SessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttendanceTable_StudentTable">
+          <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.AttendanceTable" Role="AttendanceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentTable">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="AttendanceTable">
+              <PropertyRef Name="SessionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExamMarksTable_ExamTable">
+          <End Type="SchoolMgtSysDbModel.ExamTable" Role="ExamTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.ExamMarksTable" Role="ExamMarksTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExamTable">
+              <PropertyRef Name="ExamID" />
+            </Principal>
+            <Dependent Role="ExamMarksTable">
+              <PropertyRef Name="ExamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TimeTblTable">
+          <Key>
+            <PropertyRef Name="TimeTableID" />
+          </Key>
+          <Property Name="TimeTableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <Property Name="StaffID" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Day" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ClassSubjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="StaffTable" Relationship="SchoolMgtSysDbModel.FK_TimeTblTable_StaffTable" FromRole="TimeTblTable" ToRole="StaffTable" />
+          <NavigationProperty Name="UserTable" Relationship="SchoolMgtSysDbModel.FK_TimeTblTable_UserTable" FromRole="TimeTblTable" ToRole="UserTable" />
+          <NavigationProperty Name="ClassSubjectTable" Relationship="SchoolMgtSysDbModel.FK_TimeTblTable_ClassSubjectTable" FromRole="TimeTblTable" ToRole="ClassSubjectTable" />
+        </EntityType>
+        <Association Name="FK_TimeTblTable_StaffTable">
+          <End Type="SchoolMgtSysDbModel.StaffTable" Role="StaffTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.TimeTblTable" Role="TimeTblTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StaffTable">
+              <PropertyRef Name="StaffID" />
+            </Principal>
+            <Dependent Role="TimeTblTable">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTblTable_UserTable">
+          <End Type="SchoolMgtSysDbModel.UserTable" Role="UserTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.TimeTblTable" Role="TimeTblTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="TimeTblTable">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ExpensesTable">
+          <Key>
+            <PropertyRef Name="ExpensesID" />
+          </Key>
+          <Property Name="ExpensesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExpensesTypeID" Type="Int32" Nullable="false" />
+          <Property Name="ExpensesDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="Reason" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ExpenseTypeTable" Relationship="SchoolMgtSysDbModel.FK_ExpensesTable_ExpenseTypeTable" FromRole="ExpensesTable" ToRole="ExpenseTypeTable" />
+          <NavigationProperty Name="UserTable" Relationship="SchoolMgtSysDbModel.FK_ExpensesTable_UserTable" FromRole="ExpensesTable" ToRole="UserTable" />
+        </EntityType>
+        <EntityType Name="ExpenseTypeTable">
+          <Key>
+            <PropertyRef Name="ExpensesTypeID" />
+          </Key>
+          <Property Name="ExpensesTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ExpensesTables" Relationship="SchoolMgtSysDbModel.FK_ExpensesTable_ExpenseTypeTable" FromRole="ExpenseTypeTable" ToRole="ExpensesTable" />
+        </EntityType>
+        <Association Name="FK_ExpensesTable_ExpenseTypeTable">
+          <End Type="SchoolMgtSysDbModel.ExpenseTypeTable" Role="ExpenseTypeTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.ExpensesTable" Role="ExpensesTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpenseTypeTable">
+              <PropertyRef Name="ExpensesTypeID" />
+            </Principal>
+            <Dependent Role="ExpensesTable">
+              <PropertyRef Name="ExpensesTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExpensesTable_UserTable">
+          <End Type="SchoolMgtSysDbModel.UserTable" Role="UserTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.ExpensesTable" Role="ExpensesTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ExpensesTable">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TBL_ADMIN">
+          <Key>
+            <PropertyRef Name="AD_ID" />
+          </Key>
+          <Property Name="AD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AD_NAME" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AD_PASSWARD" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbl_category" Relationship="SchoolMgtSysDbModel.FK__tbl_categ__cat_f__5C02A283" FromRole="TBL_ADMIN" ToRole="tbl_category" />
+        </EntityType>
+        <EntityType Name="TBL_QUESTIONS">
+          <Key>
+            <PropertyRef Name="QUESTION_ID" />
+          </Key>
+          <Property Name="QUESTION_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Q_TEXT" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OPA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="OPB" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="OPC" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="OPD" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="COP" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="q_fk_catid" Type="Int32" />
+          <NavigationProperty Name="tbl_category" Relationship="SchoolMgtSysDbModel.FK__TBL_QUEST__q_fk___5CF6C6BC" FromRole="TBL_QUESTIONS" ToRole="tbl_category" />
+        </EntityType>
+        <EntityType Name="TBL_SETEXAM">
+          <Key>
+            <PropertyRef Name="EXAM_ID" />
+          </Key>
+          <Property Name="EXAM_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EXAM_TDATE" Type="DateTime" Precision="3" />
+          <Property Name="EXAM_FK_STD" Type="Int32" />
+          <Property Name="EXAM_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="STD_SCORE" Type="Int32" />
+          <NavigationProperty Name="StudentTable" Relationship="SchoolMgtSysDbModel.FK__TBL_SETEX__EXAM___5555A4F4" FromRole="TBL_SETEXAM" ToRole="StudentTable" />
+        </EntityType>
+        <Association Name="FK__TBL_SETEX__EXAM___5555A4F4">
+          <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="0..1" />
+          <End Type="SchoolMgtSysDbModel.TBL_SETEXAM" Role="TBL_SETEXAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentTable">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="TBL_SETEXAM">
+              <PropertyRef Name="EXAM_FK_STD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TBL_Scoe">
+          <Key>
+            <PropertyRef Name="ScoreID" />
+          </Key>
+          <Property Name="ScoreID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cat_id" Type="Int32" />
+          <Property Name="StudentID" Type="Int32" />
+          <Property Name="ObtainMark" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="StudentTable" Relationship="SchoolMgtSysDbModel.FK__TBL_Scoe__Studen__60C757A0" FromRole="TBL_Scoe" ToRole="StudentTable" />
+          <NavigationProperty Name="tbl_category" Relationship="SchoolMgtSysDbModel.FK__TBL_Scoe__cat_id__72E607DB" FromRole="TBL_Scoe" ToRole="tbl_category" />
+        </EntityType>
+        <Association Name="FK__TBL_Scoe__Studen__60C757A0">
+          <End Type="SchoolMgtSysDbModel.StudentTable" Role="StudentTable" Multiplicity="0..1" />
+          <End Type="SchoolMgtSysDbModel.TBL_Scoe" Role="TBL_Scoe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentTable">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="TBL_Scoe">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tbl_category">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cat_name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="cat_fk_adid" Type="Int32" />
+          <Property Name="cat_encyptedstring" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TotalMark" Type="Int32" />
+          <NavigationProperty Name="TBL_ADMIN" Relationship="SchoolMgtSysDbModel.FK__tbl_categ__cat_f__5C02A283" FromRole="tbl_category" ToRole="TBL_ADMIN" />
+          <NavigationProperty Name="TBL_QUESTIONS" Relationship="SchoolMgtSysDbModel.FK__TBL_QUEST__q_fk___5CF6C6BC" FromRole="tbl_category" ToRole="TBL_QUESTIONS" />
+          <NavigationProperty Name="TBL_Scoe" Relationship="SchoolMgtSysDbModel.FK__TBL_Scoe__cat_id__72E607DB" FromRole="tbl_category" ToRole="TBL_Scoe" />
+          <Property Name="SubjectID" Type="Int32" />
+          <NavigationProperty Name="SubjectTable" Relationship="SchoolMgtSysDbModel.FK_tbl_category_SubjectTable" FromRole="tbl_category" ToRole="SubjectTable" />
+        </EntityType>
+        <Association Name="FK__tbl_categ__cat_f__5C02A283">
+          <End Type="SchoolMgtSysDbModel.TBL_ADMIN" Role="TBL_ADMIN" Multiplicity="0..1" />
+          <End Type="SchoolMgtSysDbModel.tbl_category" Role="tbl_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TBL_ADMIN">
+              <PropertyRef Name="AD_ID" />
+            </Principal>
+            <Dependent Role="tbl_category">
+              <PropertyRef Name="cat_fk_adid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TBL_QUEST__q_fk___5CF6C6BC">
+          <End Type="SchoolMgtSysDbModel.tbl_category" Role="tbl_category" Multiplicity="0..1" />
+          <End Type="SchoolMgtSysDbModel.TBL_QUESTIONS" Role="TBL_QUESTIONS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_category">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="TBL_QUESTIONS">
+              <PropertyRef Name="q_fk_catid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TBL_Scoe__cat_id__72E607DB">
+          <End Type="SchoolMgtSysDbModel.tbl_category" Role="tbl_category" Multiplicity="0..1" />
+          <End Type="SchoolMgtSysDbModel.TBL_Scoe" Role="TBL_Scoe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_category">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="TBL_Scoe">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ClassSubjectTable">
+          <Key>
+            <PropertyRef Name="ClassSubjectID" />
+          </Key>
+          <Property Name="ClassSubjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="SubjectID" Type="Int32" />
+          <NavigationProperty Name="ClassTable" Relationship="SchoolMgtSysDbModel.FK_ClassSubjectTable_ClassTable" FromRole="ClassSubjectTable" ToRole="ClassTable" />
+          <NavigationProperty Name="SubjectTable" Relationship="SchoolMgtSysDbModel.FK_ClassSubjectTable_SubjectTable" FromRole="ClassSubjectTable" ToRole="SubjectTable" />
+          <NavigationProperty Name="ExamMarksTables" Relationship="SchoolMgtSysDbModel.FK_ExamMarksTable_ClassSubjectTable" FromRole="ClassSubjectTable" ToRole="ExamMarksTable" />
+          <NavigationProperty Name="TimeTblTables" Relationship="SchoolMgtSysDbModel.FK_TimeTblTable_ClassSubjectTable" FromRole="ClassSubjectTable" ToRole="TimeTblTable" />
+        </EntityType>
+        <Association Name="FK_ClassSubjectTable_ClassTable">
+          <End Type="SchoolMgtSysDbModel.ClassTable" Role="ClassTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.ClassSubjectTable" Role="ClassSubjectTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassTable">
+              <PropertyRef Name="ClassID" />
+            </Principal>
+            <Dependent Role="ClassSubjectTable">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassSubjectTable_SubjectTable">
+          <End Type="SchoolMgtSysDbModel.SubjectTable" Role="SubjectTable" Multiplicity="0..1" />
+          <End Type="SchoolMgtSysDbModel.ClassSubjectTable" Role="ClassSubjectTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubjectTable">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="ClassSubjectTable">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExamMarksTable_ClassSubjectTable">
+          <End Type="SchoolMgtSysDbModel.ClassSubjectTable" Role="ClassSubjectTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.ExamMarksTable" Role="ExamMarksTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassSubjectTable">
+              <PropertyRef Name="ClassSubjectID" />
+            </Principal>
+            <Dependent Role="ExamMarksTable">
+              <PropertyRef Name="ClassSubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTblTable_ClassSubjectTable">
+          <End Type="SchoolMgtSysDbModel.ClassSubjectTable" Role="ClassSubjectTable" Multiplicity="1" />
+          <End Type="SchoolMgtSysDbModel.TimeTblTable" Role="TimeTblTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassSubjectTable">
+              <PropertyRef Name="ClassSubjectID" />
+            </Principal>
+            <Dependent Role="TimeTblTable">
+              <PropertyRef Name="ClassSubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_category_SubjectTable">
+          <End Type="SchoolMgtSysDbModel.SubjectTable" Role="SubjectTable" Multiplicity="0..1" />
+          <End Type="SchoolMgtSysDbModel.tbl_category" Role="tbl_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubjectTable">
+              <PropertyRef Name="SubjectID" />
+            </Principal>
+            <Dependent Role="tbl_category">
+              <PropertyRef Name="SubjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2831,29 +3311,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Fees" ColumnName="Fees" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AttendanceTables">
-            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.AttendanceTable">
-              <MappingFragment StoreEntitySet="AttendanceTable">
-                <ScalarProperty Name="AttendanceID" ColumnName="AttendanceID" />
-                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
-                <ScalarProperty Name="Student_ID" ColumnName="Student_ID" />
-                <ScalarProperty Name="AttendDate" ColumnName="AttendDate" />
-                <ScalarProperty Name="AttendTime" ColumnName="AttendTime" />
-                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ClassSubjectTables">
-            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.ClassSubjectTable">
-              <MappingFragment StoreEntitySet="ClassSubjectTable">
-                <ScalarProperty Name="ClassSubjectID" ColumnName="ClassSubjectID" />
-                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
-                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3003,19 +3460,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ExamMarksTables">
-            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.ExamMarksTable">
-              <MappingFragment StoreEntitySet="ExamMarksTable">
-                <ScalarProperty Name="MarksID" ColumnName="MarksID" />
-                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
-                <ScalarProperty Name="ClassSubjectID" ColumnName="ClassSubjectID" />
-                <ScalarProperty Name="ExamID" ColumnName="ExamID" />
-                <ScalarProperty Name="TotalMarks" ColumnName="TotalMarks" />
-                <ScalarProperty Name="ObtainMarks" ColumnName="ObtainMarks" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ExamTables">
             <EntityTypeMapping TypeName="SchoolMgtSysDbModel.ExamTable">
               <MappingFragment StoreEntitySet="ExamTable">
@@ -3150,22 +3594,6 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TimeTblTables">
-            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.TimeTblTable">
-              <MappingFragment StoreEntitySet="TimeTblTable">
-                <ScalarProperty Name="TimeTableID" ColumnName="TimeTableID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
-                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="Day" ColumnName="Day" />
-                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="ClassSubjectID" ColumnName="ClassSubjectID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserTables">
             <EntityTypeMapping TypeName="SchoolMgtSysDbModel.UserTable">
               <MappingFragment StoreEntitySet="UserTable">
@@ -3253,10 +3681,140 @@ warning 6002: The table/view 'SchoolMgtSysDb.dbo.v_AllUsers' does not have a pri
                 <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
                 <ScalarProperty Name="FatherName" ColumnName="FatherName" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ProgrameID" ColumnName="ProgrameID" />
                 <ScalarProperty Name="SessionID" ColumnName="SessionID" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExamMarksTables">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.ExamMarksTable">
+              <MappingFragment StoreEntitySet="ExamMarksTable">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ObtainMarks" ColumnName="ObtainMarks" />
+                <ScalarProperty Name="TotalMarks" ColumnName="TotalMarks" />
+                <ScalarProperty Name="ExamID" ColumnName="ExamID" />
+                <ScalarProperty Name="ClassSubjectID" ColumnName="ClassSubjectID" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="MarksID" ColumnName="MarksID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AttendanceTables">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.AttendanceTable">
+              <MappingFragment StoreEntitySet="AttendanceTable">
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="AttendTime" ColumnName="AttendTime" />
+                <ScalarProperty Name="AttendDate" ColumnName="AttendDate" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+                <ScalarProperty Name="AttendanceID" ColumnName="AttendanceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeTblTables">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.TimeTblTable">
+              <MappingFragment StoreEntitySet="TimeTblTable">
+                <ScalarProperty Name="ClassSubjectID" ColumnName="ClassSubjectID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="TimeTableID" ColumnName="TimeTableID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpensesTables">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.ExpensesTable">
+              <MappingFragment StoreEntitySet="ExpensesTable">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ExpensesDate" ColumnName="ExpensesDate" />
+                <ScalarProperty Name="ExpensesTypeID" ColumnName="ExpensesTypeID" />
+                <ScalarProperty Name="ExpensesID" ColumnName="ExpensesID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpenseTypeTables">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.ExpenseTypeTable">
+              <MappingFragment StoreEntitySet="ExpenseTypeTable">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ExpensesTypeID" ColumnName="ExpensesTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_ADMIN">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.TBL_ADMIN">
+              <MappingFragment StoreEntitySet="TBL_ADMIN">
+                <ScalarProperty Name="AD_PASSWARD" ColumnName="AD_PASSWARD" />
+                <ScalarProperty Name="AD_NAME" ColumnName="AD_NAME" />
+                <ScalarProperty Name="AD_ID" ColumnName="AD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_QUESTIONS">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.TBL_QUESTIONS">
+              <MappingFragment StoreEntitySet="TBL_QUESTIONS">
+                <ScalarProperty Name="q_fk_catid" ColumnName="q_fk_catid" />
+                <ScalarProperty Name="COP" ColumnName="COP" />
+                <ScalarProperty Name="OPD" ColumnName="OPD" />
+                <ScalarProperty Name="OPC" ColumnName="OPC" />
+                <ScalarProperty Name="OPB" ColumnName="OPB" />
+                <ScalarProperty Name="OPA" ColumnName="OPA" />
+                <ScalarProperty Name="Q_TEXT" ColumnName="Q_TEXT" />
+                <ScalarProperty Name="QUESTION_ID" ColumnName="QUESTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_SETEXAM">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.TBL_SETEXAM">
+              <MappingFragment StoreEntitySet="TBL_SETEXAM">
+                <ScalarProperty Name="STD_SCORE" ColumnName="STD_SCORE" />
+                <ScalarProperty Name="EXAM_NAME" ColumnName="EXAM_NAME" />
+                <ScalarProperty Name="EXAM_FK_STD" ColumnName="EXAM_FK_STD" />
+                <ScalarProperty Name="EXAM_TDATE" ColumnName="EXAM_TDATE" />
+                <ScalarProperty Name="EXAM_ID" ColumnName="EXAM_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_Scoe">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.TBL_Scoe">
+              <MappingFragment StoreEntitySet="TBL_Scoe">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ObtainMark" ColumnName="ObtainMark" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="ScoreID" ColumnName="ScoreID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_category">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.tbl_category">
+              <MappingFragment StoreEntitySet="tbl_category">
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="TotalMark" ColumnName="TotalMark" />
+                <ScalarProperty Name="cat_encyptedstring" ColumnName="cat_encyptedstring" />
+                <ScalarProperty Name="cat_fk_adid" ColumnName="cat_fk_adid" />
+                <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClassSubjectTables">
+            <EntityTypeMapping TypeName="SchoolMgtSysDbModel.ClassSubjectTable">
+              <MappingFragment StoreEntitySet="ClassSubjectTable">
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="ClassSubjectID" ColumnName="ClassSubjectID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

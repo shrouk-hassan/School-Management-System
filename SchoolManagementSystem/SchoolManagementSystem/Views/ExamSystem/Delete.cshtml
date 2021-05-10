@@ -1,0 +1,64 @@
+﻿@model DatabaseAccess.tbl_category
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+   
+    <dl class="dl-horizontal">
+        <dt>
+            Subject
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubjectTable.Name)
+        </dd>
+
+        <dt>
+            Exam Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cat_name)
+        </dd>
+
+        <dt>
+            Room Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cat_encyptedstring)
+        </dd>
+
+        <dt>
+            TotalMark
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalMark)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TBL_ADMIN.AD_NAME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TBL_ADMIN.AD_NAME)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-primary" /> |
+            @Html.ActionLink("Back to List", "AddCategory")
+        </div>
+    }
+</div>

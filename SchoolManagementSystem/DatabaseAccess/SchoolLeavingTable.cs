@@ -11,16 +11,19 @@ namespace DatabaseAccess
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class SchoolLeavingTable
     {
         public int SchoolLeavingID { get; set; }
         public int StudentID { get; set; }
         public int UserID { get; set; }
         public int ClassID { get; set; }
+        [DataType(DataType.Date)]
         public System.DateTime LeavingDate { get; set; }
         public string LeavingReason { get; set; }
         public string LeavingComments { get; set; }
+        [DataType(DataType.Date)]
         public System.DateTime CreatedDate { get; set; }
     
         public virtual SchoolLeavingTable SchoolLeavingTable1 { get; set; }

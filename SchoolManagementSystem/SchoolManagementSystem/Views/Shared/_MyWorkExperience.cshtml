@@ -41,7 +41,7 @@
                             @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-xs-3">
-                            @Html.DropDownListFor(model => model.Country, Model.ListeOfCountries, new { @class = "form-control", @placeholder = "Country" })
+                            @Html.DropDownListFor(model => model.Country, Model.ListOfCountries, new { @class = "form-control", @placeholder = "Country" })
                             @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <button type="button" id="AddOrUpdateExperience" class="btn" style="background-color: #e066ff; color:#FFF;"> <span class="glyphicon glyphicon-book" aria-hidden="true"></span>  Add Work Experience </button>
+                    <button type="button"  id="AddOrUpdateExperience" class="btn" style="background-color: #e066ff; color:#FFF;"> <span class="glyphicon glyphicon-book" aria-hidden="true"></span>  Add Work Experience </button>
                     <a href="@Url.Action("SkiCerfLang","Resume")" class="btn" style="position: relative; right: -50%; color:#FFF; background-color: #e066ff"> Next Step>> Skills </a>
                 </div> <!-- END PNEL BODY-->
             </form>

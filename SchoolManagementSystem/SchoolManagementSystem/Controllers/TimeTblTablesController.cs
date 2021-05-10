@@ -21,7 +21,7 @@ namespace SchoolManagementSystem.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var timeTblTables = db.TimeTblTables.Include(t => t.ClassSubjectTable).Include(t => t.StaffTable).Include(t => t.UserTable);
+            var timeTblTables = db.TimeTblTables.Include(t => t.ClassSubjectTable).Include(t => t.StaffTable).Include(t => t.UserTable).OrderByDescending(e=>e.TimeTableID);
             return View(timeTblTables.ToList());
         }
 
@@ -51,8 +51,8 @@ namespace SchoolManagementSystem.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name");
-            ViewBag.StaffID = new SelectList(db.StaffTables, "StaffID", "Name");
+            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables.Where(s => s.IsActive == true), "ClassSubjectID", "Name");
+            ViewBag.StaffID = new SelectList(db.StaffTables.Where(s=>s.IsActive==true), "StaffID", "Name");
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName");
             return View();
         }
@@ -77,8 +77,8 @@ namespace SchoolManagementSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name", timeTblTable.ClassSubjectID);
-            ViewBag.StaffID = new SelectList(db.StaffTables, "StaffID", "Name", timeTblTable.StaffID);
+            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables.Where(s => s.IsActive == true), "ClassSubjectID", "Name", timeTblTable.ClassSubjectID);
+            ViewBag.StaffID = new SelectList(db.StaffTables.Where(s => s.IsActive == true), "StaffID", "Name", timeTblTable.StaffID);
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", timeTblTable.UserID);
             return View(timeTblTable);
         }
@@ -99,8 +99,8 @@ namespace SchoolManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name", timeTblTable.ClassSubjectID);
-            ViewBag.StaffID = new SelectList(db.StaffTables, "StaffID", "Name", timeTblTable.StaffID);
+            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables.Where(s => s.IsActive == true), "ClassSubjectID", "Name", timeTblTable.ClassSubjectID);
+            ViewBag.StaffID = new SelectList(db.StaffTables.Where(s => s.IsActive == true), "StaffID", "Name", timeTblTable.StaffID);
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", timeTblTable.UserID);
             return View(timeTblTable);
         }
@@ -124,8 +124,8 @@ namespace SchoolManagementSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name", timeTblTable.ClassSubjectID);
-            ViewBag.StaffID = new SelectList(db.StaffTables, "StaffID", "Name", timeTblTable.StaffID);
+            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables.Where(s => s.IsActive == true), "ClassSubjectID", "Name", timeTblTable.ClassSubjectID);
+            ViewBag.StaffID = new SelectList(db.StaffTables.Where(s => s.IsActive == true), "StaffID", "Name", timeTblTable.StaffID);
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", timeTblTable.UserID);
             return View(timeTblTable);
         }

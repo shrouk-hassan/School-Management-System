@@ -11,6 +11,7 @@ namespace DatabaseAccess
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Web;
 
@@ -24,20 +25,30 @@ namespace DatabaseAccess
             this.StaffAttendanceTables = new HashSet<StaffAttendanceTable>();
             this.TimeTblTables = new HashSet<TimeTblTable>();
         }
-    
+        [NotMapped]
+        [Required(ErrorMessage = "{0} Requerd Field!")]
+        public HttpPostedFileBase PhotoFile { get; set; }
         public int StaffID { get; set; }
         public int UserID { get; set; }
+        [Required(ErrorMessage ="{0} Requerd Field!")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "{0} Requerd Field!")]
         public int DesignationID { get; set; }
+        [Required(ErrorMessage = "{0} Requerd Field!")]
         public string ContactNo { get; set; }
+        [Required(ErrorMessage = "{0} Requerd Field!")]
         public double BasicSalary { get; set; }
         public string EmailAddress { get; set; }
+        [Required(ErrorMessage = "{0} Requerd Field!")]
         public string Address { get; set; }
+        [Required(ErrorMessage = "{0} Requerd Field!")]
         public string Qualification { get; set; }
         public string Photo { get; set; }
         public string Description { get; set; }
-        public bool IsActive { get; set; }
+        public Nullable<bool> IsActive { get; set; }
+        [Required(ErrorMessage = "{0} Requerd Field!")]
         public string Gender { get; set; }
+        [Required(ErrorMessage = "{0} Requerd Field!")]
         public string HomePhone { get; set; }
         public bool Doyouhaveanydiability { get; set; }
         public string Ifdisabilityyesthengiveusedetaile { get; set; }
@@ -45,9 +56,9 @@ namespace DatabaseAccess
         public string Ifmedicationyesthengiveusedetaile { get; set; }
         public bool AnyCriminaloffcenceaganistyou { get; set; }
         public string Ifcriminaloffcenceyesthengiveusdetail { get; set; }
+        [DataType(DataType.Date)]
         public Nullable<System.DateTime> RegistrationDate { get; set; }
-        [NotMapped]
-        public HttpPostedFileBase PhotoFile { get; set; }
+    
         public virtual DesignationTable DesignationTable { get; set; }
         public virtual DesignationTable DesignationTable1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

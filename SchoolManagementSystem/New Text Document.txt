@@ -1,0 +1,751 @@
+create...
+@model DatabaseAccess.StudentPromoteTable
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<div class="card" mb-4 shadow>
+    <div class="card-header">
+        <h4>Students Promotion</h4>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StudentID, "Select Student", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("StudentID", null, htmlAttributes: new { @class = "form-control", @id = "StudentID" })
+                        @Html.ValidationMessageFor(model => model.StudentID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ClassID, "Select Promote Class", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("ClassID", null, htmlAttributes: new { @class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.ClassID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SectionID, "Select Section", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SectionID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SectionID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProgramSessionID, "Select Student Session", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("ProgramSessionID", null, htmlAttributes: new { @class = "form-control", @id = "ProgramSessionID" })
+                        @Html.ValidationMessageFor(model => model.ProgramSessionID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PromoteDate, "Promote Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PromoteDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PromoteDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AnnualFee, "Promotion Fee", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AnnualFee, new { htmlAttributes = new { @class = "form-control", @id = "AnnualFee" } })
+                        @Html.ValidationMessageFor(model => model.AnnualFee, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsActive, "Promotion Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.IsActive)
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsSubmit, "Promotion Fee Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.IsSubmit)
+                            @Html.ValidationMessageFor(model => model.IsSubmit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back", "Index")
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#StudentID').change(function () {
+            $('#ClassID').html('');
+            $.ajax({
+                url: 'Url.Action("GetPromotClsList","StudentPromoteTables")',
+
+                type: 'GET',
+                data: { sid: $(this).val },
+                dataType: 'Json',
+                success: function (response) {
+                    
+                    for (var i = 0; i < response.data.length; i++) {
+                        $('#ClassID').append("<option value =" + response.data[i].ClassID + ">" + response.data[i].Name + "<option>");
+                    }
+                }, error: function () { }
+            });
+        });
+
+        $('#ProgrameSessionID').change(function () {
+            $.ajax({
+                url: '@Url.Action("GetAnnualFee", "StudentPromoteTables")',
+                type: 'GET',
+                data: { sid: $(this).val() },
+                dataType: 'Json',
+                success: function (response){
+                    $('#AnnualFee').val(response.fees);
+                },
+                error: function () {}
+            });
+        });
+    });
+</script>
+@Scripts.Render("~/bundles/jqueryval")
+---------------------------------------------------------------------
+index..
+@model IEnumerable<DatabaseAccess.StudentPromoteTable>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<p>
+    @Html.ActionLink("Promote Student", "Create", null, new { @class = "btn btn-success" })
+</p>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Students</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Promote ID
+                        </th>
+                        <th>
+                            Student
+                        </th>
+                        <th>
+                            Promote Date
+                        </th>
+                        <th>
+                            Promotion Fee
+                        </th>
+                        <th>
+                            Promotion Status
+                        </th>
+                        <th>
+                            Fee Status
+                        </th>
+                        <th>
+                            Promote Class
+                        </th>
+                        <th>
+                            Class Section
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentPromotedID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentTable.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PromoteDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AnnualFee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsSubmit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassTable.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SectionTable.SectionName)
+                        </td>
+                        <td class="btn-group">
+                            @Html.ActionLink("Edit", "Edit", new { id = item.StudentPromotedID }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Details", "Details", new { id = item.StudentPromotedID }, new { @class = "btn btn-info" })
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+--------------------------
+delete
+@model DatabaseAccess.StudentPromoteTable
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>StudentPromoteTable</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PromoteDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PromoteDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnnualFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnnualFee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsSubmit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsSubmit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassTable.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassTable.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProgrameSessionTable.Details)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProgrameSessionTable.Details)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SectionTable.SectionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SectionTable.SectionName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StudentTable.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentTable.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
+-------------------------------------
+edit..
+@model DatabaseAccess.StudentPromoteTable
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<div class="card" mb-4 shadow>
+    <div class="card-header">
+        <h4>Update Students Promotion Detailes</h4>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.StudentPromotedID)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StudentID, "Select Student", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("StudentID", null, htmlAttributes: new { @class = "form-control", @id = "StudentID" })
+                        @Html.ValidationMessageFor(model => model.StudentID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ClassID, "Select Promote Class", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("ClassID", null, htmlAttributes: new { @class = "form-control", @id = "ClassID" })
+                        @Html.ValidationMessageFor(model => model.ClassID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SectionID, "Select Section", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SectionID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SectionID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProgramSessionID, "Select Student Session", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("ProgramSessionID", null, htmlAttributes: new { @class = "form-control", @id = "ProgramSessionID" })
+                        @Html.ValidationMessageFor(model => model.ProgramSessionID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PromoteDate, "Promote Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PromoteDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PromoteDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AnnualFee, "Promotion Fee", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AnnualFee, new { htmlAttributes = new { @class = "form-control", @id = "AnnualFee" } })
+                        @Html.ValidationMessageFor(model => model.AnnualFee, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsActive, "Promotion Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.IsActive)
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsSubmit, "Promotion Fee Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.IsSubmit)
+                            @Html.ValidationMessageFor(model => model.IsSubmit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Update" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back", "Index")
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#StudentID').change(function () {
+            $('#ClassID').html('');
+            $.ajax({
+                url: 'Url.Action("GetPromotClsList","StudentPromoteTables")',
+
+                type: 'GET',
+                data: { sid: $(this).val },
+                dataType: 'JSON',
+                success: function (response) {
+                    console.log(response.data);
+                    for (var i = 0; i < response.data.length; i++) {
+                        $('#ClassID').append("<option value =" + response.data[i].ClassID + ">" + response.data[i].Name + "<option>");
+                    }
+                }, error: function () { }
+            });
+        });
+
+        $('#ProgrameSessionID').change(function () {
+            $.ajax({
+                url: '@Url.Action("GetAnnualFee", "StudentPromoteTables")',
+                type: 'GET',
+                data: { sid: $(this).val() },
+                dataType: 'Json',
+                success: function (response){
+                    $('#AnnualFee').val(response.fees);
+                },
+                error: function () {}
+            });
+        });
+    });
+</script>
+@Scripts.Render("~/bundles/jqueryval")
+----------------------------------------------------
+detailes
+@model DatabaseAccess.StudentPromoteTable
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>StudentPromoteTable</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PromoteDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PromoteDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnnualFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnnualFee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsSubmit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsSubmit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassTable.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassTable.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProgrameSessionTable.Details)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProgrameSessionTable.Details)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SectionTable.SectionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SectionTable.SectionName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StudentTable.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentTable.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.StudentPromotedID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+-----------------------------------
+controller
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using DatabaseAccess;
+
+namespace SchoolManagementSystem.Controllers
+{
+    public class StudentttPromoteTablesController : Controller
+    {
+        private SchoolMgtSysDbEntities db = new SchoolMgtSysDbEntities();
+
+        // GET: StudentPromoteTables
+        public ActionResult Index()
+        {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var studentPromoteTables = db.StudentPromoteTables.Include(s => s.ClassTable).Include(s => s.ProgrameSessionTable).Include(s => s.SectionTable).Include(s => s.StudentTable).OrderByDescending(s => s.StudentPromotedID);
+            return View(studentPromoteTables.ToList());
+        }
+
+        public ActionResult GetPromotClsList(string sid)
+        {
+            int studentid = Convert.ToInt32(sid);
+            var student = db.StudentTables.Find(studentid);
+            int promoteid = 0;
+            try
+            {
+                promoteid = db.StudentPromoteTables.Where(p => p.StudentID == studentid).Max(m => m.StudentPromotedID);
+            }
+            catch  { promoteid = 0; }
+            List<ClassTable> classTable = new List<ClassTable>();
+            if (promoteid > 0)
+            {
+                var promotetable = db.StudentPromoteTables.Find(promoteid);
+                foreach (var item in db.ClassTables.Where(cls => cls.ClassID > promotetable.ClassID))
+                {
+                    classTable.Add(new ClassTable { ClassID = item.ClassID, Name = item.Name });
+                }
+            }
+            else
+            {
+                foreach (var cls in db.ClassTables.Where(cls => cls.ClassID > student.ClassID))
+                {
+                    classTable.Add(new ClassTable { ClassID = cls.ClassID, Name = cls.Name });
+                }
+            }
+            return Json(new { data = classTable }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAnnualFee(string sid)
+        {
+            int progsessid = Convert.ToInt32(sid);
+            var ps = db.ProgrameSessionTables.Find(progsessid);
+            var annualfee = db.AnnualTables.Where(a => a.AnnualID == ps.ProgrameID).SingleOrDefault();
+            double? fee = annualfee.Fees;
+            return Json(new { fees = fee }, JsonRequestBehavior.AllowGet);
+        }
+
+        // GET: StudentPromoteTables/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            StudentPromoteTable studentPromoteTable = db.StudentPromoteTables.Find(id);
+            if (studentPromoteTable == null)
+            {
+                return HttpNotFound();
+            }
+            return View(studentPromoteTable);
+        }
+
+        // GET: StudentPromoteTables/Create
+        public ActionResult Create()
+        {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name");
+            ViewBag.ProgramSessionID = new SelectList(db.ProgrameSessionTables, "ProgrameSessionID", "Details");
+            ViewBag.SectionID = new SelectList(db.SectionTables, "SectionID", "SectionName");
+            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name");
+            return View();
+        }
+
+        // POST: StudentPromoteTables/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(StudentPromoteTable studentPromoteTable)
+        {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (ModelState.IsValid)
+            {
+                db.StudentPromoteTables.Add(studentPromoteTable);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", studentPromoteTable.ClassID);
+            ViewBag.ProgramSessionID = new SelectList(db.ProgrameSessionTables, "ProgrameSessionID", "Details", studentPromoteTable.ProgramSessionID);
+            ViewBag.SectionID = new SelectList(db.SectionTables, "SectionID", "SectionName", studentPromoteTable.SectionID);
+            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", studentPromoteTable.StudentID);
+            return View(studentPromoteTable);
+        }
+
+        // GET: StudentPromoteTables/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            StudentPromoteTable studentPromoteTable = db.StudentPromoteTables.Find(id);
+            if (studentPromoteTable == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", studentPromoteTable.ClassID);
+            ViewBag.ProgramSessionID = new SelectList(db.ProgrameSessionTables, "ProgrameSessionID", "Details", studentPromoteTable.ProgramSessionID);
+            ViewBag.SectionID = new SelectList(db.SectionTables, "SectionID", "SectionName", studentPromoteTable.SectionID);
+            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", studentPromoteTable.StudentID);
+            return View(studentPromoteTable);
+        }
+
+        // POST: StudentPromoteTables/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(StudentPromoteTable studentPromoteTable)
+        {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (ModelState.IsValid)
+            {
+                db.Entry(studentPromoteTable).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", studentPromoteTable.ClassID);
+            ViewBag.ProgramSessionID = new SelectList(db.ProgrameSessionTables, "ProgrameSessionID", "Details", studentPromoteTable.ProgramSessionID);
+            ViewBag.SectionID = new SelectList(db.SectionTables, "SectionID", "SectionName", studentPromoteTable.SectionID);
+            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", studentPromoteTable.StudentID);
+            return View(studentPromoteTable);
+        }
+
+        // GET: StudentPromoteTables/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            StudentPromoteTable studentPromoteTable = db.StudentPromoteTables.Find(id);
+            if (studentPromoteTable == null)
+            {
+                return HttpNotFound();
+            }
+            return View(studentPromoteTable);
+        }
+
+        // POST: StudentPromoteTables/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            StudentPromoteTable studentPromoteTable = db.StudentPromoteTables.Find(id);
+            db.StudentPromoteTables.Remove(studentPromoteTable);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+}

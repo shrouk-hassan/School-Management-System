@@ -1,0 +1,91 @@
+﻿@model DatabaseAccess.tbl_category
+
+@{
+    ViewBag.Title = "AddCategory";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Add Exam</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SubjectID, "Select Subject", htmlAttributes: new { @class = "control-label " })
+        <div class="col-md-5">
+            @Html.DropDownList("SubjectID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.cat_name, "Exam Name", htmlAttributes: new { @class = "control-label " })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.cat_name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.cat_name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TotalMark, "Total Mark", htmlAttributes: new { @class = "control-label " })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TotalMark, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TotalMark, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Subjects</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Subject Name</th>
+                        <th>Exam Name</th>
+                        <th>Mark</th>
+                        <th>Room Name</th>
+                        <th>View All Questions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewData["list"] as List<DatabaseAccess.tbl_category>)
+                    {
+
+                    <tr>
+                        <td> @item.cat_id</td>
+                        <td> @item.SubjectTable.Name</td>
+                        <td>@item.cat_name</td>
+                        <td>@item.TotalMark</td>
+                        <td>@item.cat_encyptedstring</td>
+
+                        <td class="btn-group">
+                            <a class="btn btn-info btn-sm" href="@Url.Action("viewallquestion",new {id=item.cat_id })">View  Questions Of This Exam</a>
+
+                            @Html.ActionLink("Edit", "Edit", new { id = item.cat_id }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.cat_id }, new { @class = "btn btn-info" })
+                        </td>
+
+                    </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

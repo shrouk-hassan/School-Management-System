@@ -1,0 +1,74 @@
+﻿@model DatabaseAccess.TBL_QUESTIONS
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TBL_QUESTIONS</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Q_TEXT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Q_TEXT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OPA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OPA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OPB)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OPB)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OPC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OPC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OPD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OPD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.COP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.COP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tbl_category.cat_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tbl_category.cat_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.QUESTION_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,104 @@
+﻿@model DatabaseAccess.TBL_QUESTIONS
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>QuizStart</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    @{
+        var EndTime = DateTime.UtcNow.AddSeconds(65);
+        var Timeremaning = TimeSpan.FromTicks(EndTime.Ticks - DateTime.UtcNow.Ticks).TotalSeconds;
+    }
+    <div><h2>TimeRemaning: <span id="minremaning">:</span>:<span id="secremaning"></span></h2></div>   
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="container" style="margin:0 auto;margin-top:150px;font-family:'Arial Rounded MT'">
+
+                <div class="row">
+                    <h1>@Html.DisplayFor(x => x.Q_TEXT)</h1>
+                </div>
+                <br />
+                <br />
+                <br />
+                <div class="row">
+                    <h3>@Html.RadioButtonFor(x => x.OPA, new { @class = "form-control" }) @Model.OPA</h3>
+                </div>
+                <br />
+                <div class="row">
+                    <h3>@Html.RadioButtonFor(x => x.OPB, new { @class = "form-control" }) @Model.OPB</h3>
+                </div>
+                <br />
+                <div class="row">
+                    <h3>@Html.RadioButtonFor(x => x.OPC, new { @class = "form-control" }) @Model.OPC</h3>
+                </div>
+                <br />
+                <div class="row">
+                    <h3>@Html.RadioButtonFor(x => x.OPD, new { @class = "form-control" }) @Model.OPD</h3>
+                </div>
+
+                <div class="row" style="display:none">
+                    @Html.TextBoxFor(x => x.COP)
+                </div>
+                <br /> <br /> <br />
+                <div class="row">
+                    <input type="submit" value="Submit" class="btn btn-success" />
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
+
+            </div>
+        </div>
+
+
+    }
+
+
+</body>
+</html>
+<script>
+    var secremaning = @Timeremaning;
+    var seccounter = secremaning % 60;
+    function FormatNumber(number) {
+        if (number < 10) return '0' + number;
+        else return '' + number;
+    }
+
+
+    function starttick() {
+        document.getElementById('secremaning').innerText = FormatNumber(seccounter);
+        document.getElementById('minremaning').innerText = FormatNumber(parseInt(secremaning /60));
+
+        var ticks = setInterval(function () {
+            if (secremaning > 0) {
+                secremaning = secremaning - 1;
+                seccounter = seccounter - 1;
+
+                document.getElementById('secremaning').innerText = FormatNumber(seccounter);
+                document.getElementById('minremaning').innerText = FormatNumber(parseInt(secremaning / 60));
+                if (seccounter == 0)
+                    seccounter = 60;
+            }
+
+
+            else {
+                window.location.href="@Url.Action("EndExam", "ExamSystem")";
+            }
+
+
+        }, 1000);
+    }
+    starttick();
+</script>

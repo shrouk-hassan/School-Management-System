@@ -47,36 +47,36 @@
 
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StudentPromotedID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StudentTable.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PromoteDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.AnnualFee)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsActive)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsSubmit)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ClassTable.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SectionTable.SectionName)
-                        </td>
-                        <td class="btn-group">
-                            @Html.ActionLink("Edit", "Edit", new { id = item.StudentPromotedID }, new { @class = "btn btn-primary" })
-                            @Html.ActionLink("Details", "Details", new { id = item.StudentPromotedID }, new { @class = "btn btn-info" })
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StudentPromotedID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StudentTable.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PromoteDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AnnualFee)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsActive)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsSubmit)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassTable.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SectionTable.SectionName)
+                            </td>
+                            <td class="btn-group">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.StudentPromotedID }, new { @class = "btn btn-primary" }) &nbsp;
+                                @Html.ActionLink("Details", "Details", new { id = item.StudentPromotedID }, new { @class = "btn btn-info" })
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>

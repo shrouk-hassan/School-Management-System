@@ -1,0 +1,45 @@
+﻿<style>
+    .container {
+        margin-top: -53px;
+    }
+</style>
+@{
+    ViewBag.Title = "work Experience";
+    Layout = "~/Views/Shared/_ResumeLayoutPage.cshmtl";
+
+}
+@{Html.RenderAction("WorkExperiencePartial", "Resume");
+}
+@section script{
+    <script type="text/javascript">
+     
+
+            $('#AddOrUpdateExperience'),on('click' ,function(){
+                 var serializaModel ={
+
+                     IDEdu: $('#EmployeeWorkExperienceID').val,
+                     InstituteUniversity: $('#Company').val(),
+                  TitleOfDiploma:$('#Title').val(),
+                     Degree: $('#Country').val(),
+                  FromYear:$('#FromYear').val(),
+                       ToYear:$('#ToYear').val(),
+                     Country: $('#Description').val() };
+
+        console.log(JSON.stringify(serializaModel));
+
+         $.ajax({
+          url:'Url.Action("AddOrUpdateExperience","Resume")',
+
+          type:'POST',
+          data:{workExperience:serializaModel},
+             success:function(response){
+        alert(response.data);
+           }, error: function (error) {
+               alert(error.data)
+           }
+        });
+         });
+             });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

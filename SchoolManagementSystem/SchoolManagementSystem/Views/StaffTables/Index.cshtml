@@ -4,67 +4,93 @@
     ViewBag.Title = "Employees";
 }
 
-<h2>Index</h2>
+
 
 <p>
-    @Html.ActionLink("Add New Employee", "Create", null, new { @class = "btn btn-success" })
+    @Html.ActionLink(" Staff Rregisteration", "Create", null, new { @class = "btn btn-success" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Full Name
-        </th>
-        <th>
-            Contact No
-        </th>
-        <th>
-            Salary
-        </th>
-        <th>
-            Address
-        </th>
-        <th>
-            Photo
-        </th>
-        <th>
-            Status
-        </th>
-        <th></th>
-    </tr>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Employee's</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Employee ID
+                        </th>
+                        <th>
+                            Employee
+                        </th>
+                        <th>
+                            Contact No
+                        </th>
+                        <th>
+                            Salary
+                        </th>
+                        <th>
+                            Address
+                        </th>
+                        <th>
+                            Photo
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StaffID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BasicSalary)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Photo))
+                            {
+                                <img src="@Url.Content(item.Photo)" alt="Image" style="width:100px; height:150px; max-width:100%; height:auto;" />
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td class="btn-group">
+                            @*@{
+            if (item.DesignationID == 1 || item.DesignationID == 2 || item.DesignationID == 3 || item.DesignationID == 4)
+            {
+                @Html.ActionLink("class Time Table", "TeacherReport", "TimeTableReport", new { id = item.StaffID }, new { @class = "btn btn-primary" })
+            }
+        }*@
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BasicSalary)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @if (!string.IsNullOrEmpty(item.Photo))
-                {
-                    <img src="@Url.Content(item.Photo)" alt="Image" style="width:100px; height:150px; max-width:100%; height:auto;" />
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td class="btn-group">
-                @Html.ActionLink("Edit", "Edit", new { id = item.StaffID }, new { @class = "btn btn-primary" })
-                @Html.ActionLink("Details", "Details", new { id = item.StaffID }, new { @class = "btn btn-info" })
-                @Html.ActionLink("Add Resume", "CheckCV", "Resume", new { id = item.StaffID }, new { @class = "btn btn-success" })
-                @Html.ActionLink("Add Education", "OnlyEducation", "Resume", new { id = item.StaffID }, new { @class = "" })
-                @Html.ActionLink("Add Experience", "OnlyWorkExperience", "Resume", new { id = item.StaffID }, new { @class = "" })
-                @Html.ActionLink("Add Skills", "OnlySkiCerflang", "Resume", new { id = item.StaffID }, new { @class = "" })
-            </td>
-        </tr>
-    }
+                            @*@Html.ActionLink("Experience Certfication", "ExperienceC", "EmployeeCertficate", new { id = item.StaffID }, new { @class = "btn btn-primary" })*@
+                            @Html.ActionLink("Edit", "Edit", new { id = item.StaffID }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Details", "Details", new { id = item.StaffID }, new { @class = "btn btn-info" })
 
-</table>
+                            @*@Html.ActionLink("Add Resume", "CheckCV", "Resume", new { id = item.StaffID }, new { @class = "btn btn-success" })*@
+                            @*@Html.ActionLink("Add Education", "OnlyEducation", "Resume", new { id = item.StaffID }, new { @class = "btn btn-success" })*@
+                            @*@Html.ActionLink("Add Experience", "OnlyWorkExperience", "Resume", new { id = item.StaffID }, new { @class = "btn btn-success" })*@
+                            @*@Html.ActionLink("Add Skills", "OnlySkiCerflang", "Resume", new { id = item.StaffID }, new { @class = "btn btn-success" })*@
+                        </td>
+                    </tr>
+                    }
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>

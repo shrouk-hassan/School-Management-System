@@ -22,8 +22,9 @@ namespace DatabaseAccess
         public int ObtainMarks { get; set; }
         public int UserID { get; set; }
     
-        public virtual ExamTable ExamTable { get; set; }
-        public virtual UserTable UserTable { get; set; }
         public virtual StudentTable StudentTable { get; set; }
+        public virtual UserTable UserTable { get; set; }
+        public virtual ExamTable ExamTable { get; set; }
+        public virtual ClassSubjectTable ClassSubjectTable { get; set; }
     }
 }

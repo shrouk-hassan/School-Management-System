@@ -2,59 +2,151 @@
 @{
     ViewBag.Title = "CV";
 
-    Layout = "../Views/Shared/_resumeLayoutPage.cshtml";
+    //Layout = "../Views/Shared/_resumeLayoutPage.cshtml";
+    Layout = null;
 }
 
-<style type="text/css">
-    .continer{
-        margin-top:-5px;
-    }
-    .socialMedia{
-        padding-left:16%;
-    }
-    .panel-default{
-        width:65%;
-        margin-left:18%;
-        margin-top:3%;
-    }
-    .IconTitle{
-        border:3px solid #e0e0e0;
-        display:inline-block;
-        width:70px;
-        height:70px;
-        border-radius:100%;
-    }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Generator</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style type="text/css">
+        .field-validation-error {
+            background-color: #e85555;
+            color: white;
+            padding: 2px 9px;
+            border-radius: 9px;
+            font-size: 12px;
+        }
 
-    .yerStyle{
-        position:relative;
-        left:50%;
-        font-size:13px;
-        color:#fff;
-        padding:5px;
-        border-radius:4px;
-        font-weight:bold;
-    }
+        .continer {
+            margin-top: -5px;
+        }
 
-    .box{
-        border:1px solid #d0cfcf;
-        padding:16px 0px;
-        border-radius:11px;
-        margin-top:15px;
-    }
+        .socialMedia {
+            padding-left: 16%;
+        }
 
-    .description{
-        padding:9px 48px;
-        font-size:13px;
-        color:#797575;
-        font-style:italic;
-    }
-</style>
-<div class="container">
-    @{Html.RenderAction("GetPersonnalInfoPartial", "Resume"); }
-    @{Html.RenderAction("GetEducationCVPartial", "Resume"); }
-    @{Html.RenderAction("WorkExperienceCVPartial", "Resume"); }
-    @{Html.RenderAction("SkillsCVPartial", "Resume"); }
-    @{Html.RenderAction("CertifictionsCVPartial", "Resume"); }
-    @{Html.RenderAction("LanguageCVPartial", "Resume"); }
+        .panel-default {
+            width: 65%;
+            margin-left: 18%;
+            margin-top: 3%;
+        }
 
-</div>
+        .IconTitle {
+            border: 3px solid #e0e0e0;
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            border-radius: 100%;
+        }
+
+        .yerStyle {
+            position: relative;
+            left: 50%;
+            font-size: 13px;
+            color: #fff;
+            padding: 5px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .box {
+            border: 1px solid #d0cfcf;
+            padding: 16px 0px;
+            border-radius: 11px;
+            margin-top: 15px;
+        }
+
+        .description {
+            padding: 9px 48px;
+            font-size: 13px;
+            color: #797575;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="container">
+
+    <div class="container body-content">
+        @section scripts{
+            // Add something here
+        }
+        @*<style type="text/css">
+            .continer {
+                margin-top: -5px;
+            }
+
+            .socialMedia {
+                padding-left: 16%;
+            }
+
+            .panel-default {
+                width: 65%;
+                margin-left: 18%;
+                margin-top: 3%;
+            }
+
+            .IconTitle {
+                border: 3px solid #e0e0e0;
+                display: inline-block;
+                width: 70px;
+                height: 70px;
+                border-radius: 100%;
+            }
+
+            .yerStyle {
+                position: relative;
+                left: 50%;
+                font-size: 13px;
+                color: #fff;
+                padding: 5px;
+                border-radius: 4px;
+                font-weight: bold;
+            }
+
+            .box {
+                border: 1px solid #d0cfcf;
+                padding: 16px 0px;
+                border-radius: 11px;
+                margin-top: 15px;
+            }
+
+            .description {
+                padding: 9px 48px;
+                font-size: 13px;
+                color: #797575;
+                font-style: italic;
+            }
+        </style>*@
+        <div class="container">
+            @*@{Html.RenderAction("GetPersonnalInfoPartial", "Resume"); }*@
+            @{Html.RenderAction("GetEducationCVPartial", "Resume"); }
+            @{Html.RenderAction("WorkExperienceCVPartial", "Resume"); }
+            @{Html.RenderAction("SkillsCVPartial", "Resume"); }
+            @{Html.RenderAction("CertifictionsCVPartial", "Resume"); }
+            @{Html.RenderAction("LanguageCVPartial", "Resume"); }
+
+        </div>
+
+        <hr />
+        <footer>
+            <p>Design by M&R&SH</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@RenderSection("scripts", required: false)*@
+
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+            $('#datetimepicker2').datetimepicker();
+        });</script>
+
+</body>
+</html>

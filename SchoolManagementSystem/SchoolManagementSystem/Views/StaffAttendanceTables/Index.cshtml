@@ -4,48 +4,62 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(" Submit Attendance", "Create", null, new { @class = "btn btn-success" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AttendDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ComingTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClosingTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StaffTable.Name)
-        </th>
-        <th></th>
-    </tr>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"> Employee Attendance Record</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Employee
+                        </th>
+                        <th>
+                            Attend Date
+                        </th>
+                        <th>
+                            Check In
+                        </th>
+                        <th>
+                            Check Out
+                        </th>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AttendDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ComingTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClosingTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StaffTable.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.StaffAttendanceID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.StaffAttendanceID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.StaffAttendanceID })
-        </td>
-    </tr>
-}
+                        <th></th>
+                    </tr>
+                    </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StaffTable.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AttendDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ComingTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClosingTime)
+                            </td>
 
-</table>
+                            <td>
+                                @*@Html.ActionLink("Edit", "Edit", new { id=item.StaffAttendanceID }) |*@
+                                @Html.ActionLink("View Details", "Details", new { id = item.StaffAttendanceID }, new { @class = "btn btn-info" })
+                                @*@Html.ActionLink("Delete", "Delete", new { id=item.StaffAttendanceID })*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            </div>
+</div>
+</div>

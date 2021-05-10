@@ -21,8 +21,23 @@ namespace SchoolManagementSystem.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var attendanceTables = db.AttendanceTables.Include(a => a.StudentTable).Include(a => a.ClassTable);
+            var attendanceTables = db.AttendanceTables.Include(a => a.StudentTable).Include(a => a.ClassTable).OrderByDescending(a=>a.AttendanceID);
             return View(attendanceTables.ToList());
+        }
+
+        public ActionResult GetByPromotID(string sid)
+        {
+            int promoteid = Convert.ToInt32(sid);
+            var promoterecord = db.StudentPromoteTables.Find(promoteid);
+            if (promoterecord != null)
+            {
+                return Json(new { StudentID = promoterecord.StudentID, ClassID = promoterecord.ClassID, SessionID = promoterecord.ProgrameSessionTable.SessionID }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                ViewBag.msg = "Invalid Promote ID";
+                return View();
+            }
         }
 
         // GET: AttendanceTables/Details/5
@@ -51,8 +66,10 @@ namespace SchoolManagementSystem.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            ViewBag.SessionID = new SelectList(db.StudentTables, "StudentID", "Name");
+            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name");
             ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name");
+            ViewBag.SessionID = new SelectList(db.SessionTables, "SessionID", "Name");
+
             return View();
         }
 
@@ -74,8 +91,9 @@ namespace SchoolManagementSystem.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.SessionID = new SelectList(db.StudentTables, "StudentID", "Name", attendanceTable.SessionID);
+            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", attendanceTable.StudentID);
             ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", attendanceTable.ClassID);
+            ViewBag.SessionID = new SelectList(db.SessionTables, "SessionID", "Name", attendanceTable.SessionID);
             return View(attendanceTable);
         }
 
@@ -95,8 +113,9 @@ namespace SchoolManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.SessionID = new SelectList(db.StudentTables, "StudentID", "Name", attendanceTable.SessionID);
+            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", attendanceTable.StudentID);
             ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", attendanceTable.ClassID);
+            ViewBag.SessionID = new SelectList(db.SessionTables, "SessionID", "Name", attendanceTable.SessionID);
             return View(attendanceTable);
         }
 
@@ -117,8 +136,9 @@ namespace SchoolManagementSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.SessionID = new SelectList(db.StudentTables, "StudentID", "Name", attendanceTable.SessionID);
+            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", attendanceTable.StudentID);
             ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", attendanceTable.ClassID);
+            ViewBag.SessionID = new SelectList(db.SessionTables, "SessionID", "Name", attendanceTable.SessionID);
             return View(attendanceTable);
         }
 

@@ -21,7 +21,10 @@ namespace SchoolManagementSystem.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var classSubjectTables = db.ClassSubjectTables.Include(c => c.ClassTable).Include(c => c.SubjectTable).Include(c => c.SubjectTable1);
+            var classSubjectTables = db.ClassSubjectTables.Include(c => c.ClassTable).Include(c => c.SubjectTable);
+
+
+            //var classSubjectTables = db.ClassSubjectTables.Include(c => c.SubjectTable).Include(c => c.ClassTable);
             return View(classSubjectTables.ToList());
         }
 
@@ -51,8 +54,8 @@ namespace SchoolManagementSystem.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            ViewBag.ClassID = new SelectList(db.ClassTables.Where(c => c.IsActive == true), "ClassID", "Name");
             ViewBag.SubjectID = new SelectList(db.SubjectTables, "SubjectID", "Name");
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name");
             return View();
         }
 
@@ -61,19 +64,18 @@ namespace SchoolManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ClassSubjectTable classSubjectTable)
+        public ActionResult Create( ClassSubjectTable classSubjectTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
                 return RedirectToAction("Login", "Home");
             }
-
             if (ModelState.IsValid)
             {
                 var classname = db.ClassTables.Where(c => c.ClassID == classSubjectTable.ClassID).SingleOrDefault();
-                if(classname != null)
+                if (classname != null)
                 {
-                    if(!classSubjectTable.Name .Contains(classname.Name))
+                    if (!classSubjectTable.Name.Contains(classname.Name))
                     {
                         classSubjectTable.Name = classSubjectTable + "-" + classname.Name;
                     }
@@ -82,9 +84,10 @@ namespace SchoolManagementSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ClassID = new SelectList(db.ClassTables.Where(c => c.IsActive == true), "ClassID", "Name", classSubjectTable.ClassID);
             ViewBag.SubjectID = new SelectList(db.SubjectTables, "SubjectID", "Name", classSubjectTable.SubjectID);
+
+
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", classSubjectTable.ClassID);
             return View(classSubjectTable);
         }
 
@@ -104,8 +107,8 @@ namespace SchoolManagementSystem.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ClassID = new SelectList(db.ClassTables.Where(c => c.IsActive == true), "ClassID", "Name", classSubjectTable.ClassID);
             ViewBag.SubjectID = new SelectList(db.SubjectTables, "SubjectID", "Name", classSubjectTable.SubjectID);
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", classSubjectTable.ClassID);
             return View(classSubjectTable);
         }
 
@@ -114,7 +117,7 @@ namespace SchoolManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ClassSubjectTable classSubjectTable)
+        public ActionResult Edit( ClassSubjectTable classSubjectTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
@@ -134,8 +137,8 @@ namespace SchoolManagementSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ClassID = new SelectList(db.ClassTables.Where(c => c.IsActive == true), "ClassID", "Name", classSubjectTable.ClassID);
             ViewBag.SubjectID = new SelectList(db.SubjectTables, "SubjectID", "Name", classSubjectTable.SubjectID);
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", classSubjectTable.ClassID);
             return View(classSubjectTable);
         }
 

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<DatabaseAccess.TBL_QUESTIONS>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Q_TEXT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OPA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OPB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OPC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OPD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.COP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tbl_category.cat_name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Q_TEXT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OPA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OPB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OPC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OPD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.COP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tbl_category.cat_name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.QUESTION_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.QUESTION_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.QUESTION_ID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "AllStudents";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Student Attendance</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Full Name
+                        </th>
+                        <th>
+                            Class
+                        </th>
+                        <th>
+                            Attend Date
+                        </th>
+                        <th>
+                            Attend Time
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Message)
+                    {
+                        <tr>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Class
+                            </td>
+                            <td>
+                                @item.AttendDate
+                            </td>
+                            <td>
+                                @item.AttendTime
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

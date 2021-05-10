@@ -1,0 +1,79 @@
+﻿@model DatabaseAccess.StaffTable
+
+
+    @{
+        Layout = null;
+    }
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>ExperienceC</title>
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/bundles/modernizer")
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    </head>
+    <body>
+        <div>
+            <div class="container">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="row">
+                            <div class="col-md-9">
+                                <button type="button" class="btn btn-primary">Save Record</button>
+                                <a href="javascript:window.print()" class="btn btn-default"> <i class="fas fa-print"></i>Print</a>
+                                <a href='@Url.Action("SendEmil","#")' class="btn btn-default"><i class="fas fa-envelope-open-text"></i></a>
+
+
+                                <br /><br />
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="text-center"> <h1><b>School System</b></h1></div>
+                                        <div class="text-center"> <img src="~/Content/AdminTempelate/img/photo-1517849845537-4d257902454a.jpg" height="200" width="220" /></div>
+                                        <div class="text-center"> <p>Minia School. Cell:0321-9113267</p></div>
+                                        <div class="text-center"> <h2><b>SCHOOL EXPERIENCE CERTIFICATE</b></h2></div>
+                                        <div class="text-center"> <b>S.NO____________</b></div>
+                                        <br /><br />
+                                        <div><span class="pull-left"><b>A dm.#:@Model.StaffID </b></span><span class="pull-right"><b>Date: @DateTime.Now.ToShortDateString()</b></span></div>
+                                        <div class="clearfix"></div>
+                                        <br />
+                                        <div>
+                                            Certificate That
+                                            <span><b>Mr/Miss.</b></span>
+                                            <b>@Model.Name</b> 
+                                            <span><b>@Model.DesignationTable.Title</b></span>
+                                            Worked in our School<b>@*from ______@ViewBag.FromDate*@ to @ViewBag.ToDate </b> with our entir satisfaction.During this is the Certfy that
+                                            <span><b>his/her</b></span> Working period we found him a sincere,honest,hardworking,didicated employee with profissional attitude and very good job knowledge.
+                                            He is amiable in nature and charcter is well. We have no objection to allow him in any better postion and have no liabilities in our School.
+
+                                            <br /><br />
+                                            <div class="text-center">
+                                                We wish very Success in Life
+                                            </div>
+
+                                            <b>Conduct: Master</b>
+                                            <br /><br />
+                                            <div><span class="pull-left">________________</span><span class="pull-right">________________</span></div>
+                                            <br />
+                                            <div>
+                                                <span class="pull-left">Prepared by</span> <span class="pull-right">Principal</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+          
+        </div>
+    </body>
+</html>

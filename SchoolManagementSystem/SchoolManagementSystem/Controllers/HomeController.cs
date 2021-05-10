@@ -32,6 +32,18 @@ namespace SchoolManagementSystem.Controllers
                         Session["ContactNo"] = finduser[0].ContactNo;
                         Session["EmailAddress"] = finduser[0].EmailAddress;
                         Session["UserID"] = finduser[0].UserID;
+                        var userid = finduser[0].UserID;
+
+                        var studentphoto = db.StudentTables.Where(s =>s.UserID == userid).FirstOrDefault();
+                        if(studentphoto != null)
+                        {
+                            Session["Photo"] = studentphoto.Photo;
+                        }
+                        else
+                        {
+                            var employee = db.StaffTables.Where(e => e.UserID == userid).FirstOrDefault();
+                            Session["Photo"] = employee.Photo;
+                        }
 
                         string url = string.Empty;
                         if(finduser[0].UserTypeID == 2)
@@ -97,6 +109,34 @@ namespace SchoolManagementSystem.Controllers
             ViewBag.Message = "Welcome to School";
 
             return View();
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        public ActionResult ChangePasswordU(string oldpassword, string newpassword, string confirmpassword)
+        {
+            if(newpassword != confirmpassword)
+            {
+                ViewBag.Message = "Not Matched !!";
+                return View("ChangePassword");
+            }
+            int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
+            var getuser = db.UserTables.Find(userid);
+            if(getuser.Password == oldpassword.Trim())
+            {
+                getuser.Password = newpassword.Trim();
+            }
+            else
+            {
+                ViewBag.Message = "Old Password Is Incorrect !!";
+                return View("ChangePassword");
+            }
+            db.Entry(getuser).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Logout");
         }
 
         public ActionResult Logout()

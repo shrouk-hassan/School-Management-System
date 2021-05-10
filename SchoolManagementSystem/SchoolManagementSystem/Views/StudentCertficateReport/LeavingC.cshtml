@@ -1,0 +1,83 @@
+﻿@model DatabaseAccess.StudentPromoteTable
+    @using SchoolManagementSystem.Models;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>School Leaving Certficate</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/bundles/modernizer")
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+    <div>
+        <div class="container">
+
+            @using (Html.BeginForm("PrintLeavingC", "StudentCertficateReport", new { id = Model.StudentID }, FormMethod.Post, new { @class = "form-horizontal user", role = "form", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="hidden-print">
+                               
+                                <a href="javascript:window.print()" class="btn btn-default"> <i class="fas fa-print"></i>Print</a>
+                                <a href='@Url.Action("SendEmil","#")' class="btn btn-default"><i class="fas fa-envelope-open-text"></i></a>
+                                <input type="submit" value="submit" class="btn btn-success" />
+                                <h2>@ViewBag.Message</h2>
+                            </div>
+                            <br /><br />
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="text-center"> <h1><b>School System</b></h1></div>
+                                    <div class="text-center"> <img src="~/Content/Logo/schoolhouse-icon.png" height="200" width="220" /></div>
+                                    <div class="text-center"> <p>Minia School. Cell:0321-9113267</p></div>
+                                    <div class="text-center"> <h2><b>SCHOOL LEAVING CERTIFICATE</b></h2></div>
+                                    <div class="text-center"> <b>S.NO____________</b></div>
+                                    <br /><br />
+                                    <div><span class="pull-left"><b>Adm.# @Model.StudentID</b></span><span class="pull-right"><b>Date: @DateTime.Now.ToShortDateString()</b></span></div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div>
+                                        Certificate That
+                                        <span><b>Mr/Miss.</b></span>
+                                        <span><b>Miss.</b></span> <b>@Model.StudentTable.Name</b>
+                                        <span>Son</span>/
+                                        <span>daughter</span> of <b>Mr. @Model.StudentTable.FatherName</b> and attendend this School up to<b> @Model.ClassTable.Name.</b>
+                                        Has Paid All the dues of the School and was Allowed to with Draw his Name on the above date.
+                                        <span>He</span>/
+                                        <span>She</span>
+                                        Was studying in <b>Class @Model.ClassTable.Name</b> And Passed/Failed in the Examination for Promotion to Class<b>  @Model.ClassTable.Name</b>
+                                        <br /><br />
+                                        @*<b>Date of Birth</b>(in Words):<b>@Model.StudentTable.DateofBirth.ToShortDateString()</b>*@
+                                        <br /><b>Date of Birth</b>(in figure):<b>@Model.StudentTable.DateofBirth.ToShortDateString()</b>
+                                        <br /><br />
+                                        <b>Conduct: Master</b>
+                                        <br /><br />
+                                        <div><span class="pull-left">________________</span><span class="pull-right">________________</span></div>
+                                        <br />
+                                        <div>
+                                            <span class="pull-left">Prepared by</span> <span class="pull-right">Principal</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <script src="~/Scripts/jquery.validate.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.js"></script>
+        <script src="~/Scripts/moment.js"></script>
+    </div>
+</body>
+</html>

@@ -12,20 +12,17 @@ namespace DatabaseAccess
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     public partial class AnnualTable
     {
         public int AnnualID { get; set; }
         public int UserID { get; set; }
-        [Required(ErrorMessage ="Please Select Programe")]
+        [Required(ErrorMessage = "Please Select Programe")]
         public int ProgrameID { get; set; }
-        [Required(ErrorMessage = "Please Enter Annual Fee Title")]
+        [Required(ErrorMessage = "{0} Requerd Field!")]
         public string Title { get; set; }
         public string Description { get; set; }
-        [Required(ErrorMessage = "Please Enter Annual Fee")]
-        [DataType(DataType.Currency)]
         public Nullable<double> Fees { get; set; }
-        [Display(Name = "Status")]
         public bool IsActive { get; set; }
     
         public virtual ProgrameTable ProgrameTable { get; set; }

@@ -1,0 +1,102 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Generator</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style type="text/css">
+        .field-validation-error {
+            background-color: #e85555;
+            color: white;
+            padding: 2px 9px;
+            border-radius: 9px;
+            font-size: 12px;
+        }
+
+        .container {
+            margin-top: -53px;
+        }
+    </style>
+</head>
+<body class="container">
+
+    <div class="container body-content">
+
+
+        @{Html.RenderAction("EducationPartial", "Resume");
+        }
+        @section script{
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#Country').change(function () {
+                        $('#City').html('');
+                        $.ajax({
+                            url: 'Url.Action("GetCities","Resume")',
+
+                            type: 'GET',
+                            data: { country: $(this).val },
+                            dataType: 'JSON',
+                            success: function (response) {
+                                console.log(response.data);
+                                for (var i = 0; i < response.data.length; i++) {
+                                    $('#City').append("<option value =" + response.data[i].value + ">" + response.data[i].Text + "<option>");
+                                }
+                            }, error: function () { }
+                        });
+                    });
+
+                    $('#AddOrUpdateEducation'), on('click', function () {
+                        var serializaModel = {
+
+                            EmployeeEducationID: $('#EmployeeEducationID').val,
+                            InstituteUniversity: $('#InstituteUniversity').val(),
+                            TitleOfDiploma: $('#TitleOfDiploma').val(),
+                            Degree: $('#Degree').val(),
+                            FromYear: $('#FromYear').val(),
+                            ToYear: $('#ToYear').val(),
+                            Country: $('#Country').val(),
+                            City: $('#City').val(),
+                        };
+
+                        console.log(JSON.stringify(serializaModel));
+
+                        $.ajax({
+                            url: 'Url.Action("AddOrUpdateEducation","Resume")',
+
+                            type: 'POST',
+                            data: { education: serializaModel },
+                            success: function (response) {
+                                alert(response.data);
+                            }, error: function (error) {
+                                alert(error.data)
+                            }
+                        });
+                    });
+                });
+            </script>
+            @Scripts.Render("~/bundles/jqueryval")
+        }
+        <hr />
+        <footer>
+            <p>Design by M&R&SH</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@RenderSection("scripts", required: false)*@
+
+    <script type="text/javascript">
+    $(function () {
+            $('#datetimepicker1').datetimepicker();
+            $('#datetimepicker2').datetimepicker();
+        });</script>
+
+</body>
+</html>

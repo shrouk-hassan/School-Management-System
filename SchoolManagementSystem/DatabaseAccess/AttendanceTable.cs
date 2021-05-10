@@ -11,17 +11,24 @@ namespace DatabaseAccess
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class AttendanceTable
     {
         public int AttendanceID { get; set; }
+        [Required(ErrorMessage = "Please Select Session")]
         public int SessionID { get; set; }
-        public int Student_ID { get; set; }
+        [Required(ErrorMessage = "Please Select Student")]
+        public int StudentID { get; set; }
+        [DataType(DataType.Date)]
         public System.DateTime AttendDate { get; set; }
+        [DataType(DataType.Time)]
         public System.TimeSpan AttendTime { get; set; }
+        [Required(ErrorMessage = "Please Select Class")]
         public int ClassID { get; set; }
     
         public virtual ClassTable ClassTable { get; set; }
+        public virtual SessionTable SessionTable { get; set; }
         public virtual StudentTable StudentTable { get; set; }
     }
 }

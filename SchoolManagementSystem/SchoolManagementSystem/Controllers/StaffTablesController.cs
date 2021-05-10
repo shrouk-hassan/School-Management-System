@@ -52,7 +52,6 @@ namespace SchoolManagementSystem.Controllers
                 return RedirectToAction("Login", "Home");
             }
             ViewBag.DesignationID = new SelectList(db.DesignationTables, "DesignationID", "Title");
-            ViewBag.DesignationID = new SelectList(db.DesignationTables, "DesignationID", "Title");
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName");
             return View();
         }
@@ -62,21 +61,33 @@ namespace SchoolManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( StaffTable staffTable)
+        public ActionResult Create(StaffTable staffTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
                 return RedirectToAction("Login", "Home");
             }
+
+            staffTable.Photo = "/Content/EmployeePhoto/default.png";
             int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
             staffTable.UserID = userid;
-            staffTable.Photo = "/Content/EmployeePhoto/default.png";
 
             if (ModelState.IsValid)
             {
+                var user = new UserTable();
+                user.Address = staffTable.Address;
+                user.ContactNo = staffTable.ContactNo;
+                user.EmailAddress = staffTable.EmailAddress;
+                user.FullName = staffTable.Name;
+                user.UserName = staffTable.Name;
+                user.UserTypeID = 2;
+                user.Password = "123456";
+                db.UserTables.Add(user);
+                staffTable.UserID = user.UserID;
+
                 db.StaffTables.Add(staffTable);
                 db.SaveChanges();
-                if(staffTable.PhotoFile != null)
+                if (staffTable.PhotoFile != null)
                 {
                     var folder = "/Content/EmployeePhoto";
                     var file = string.Format("{0}.png", staffTable.StaffID);
@@ -114,7 +125,6 @@ namespace SchoolManagementSystem.Controllers
                 return HttpNotFound();
             }
             ViewBag.DesignationID = new SelectList(db.DesignationTables, "DesignationID", "Title", staffTable.DesignationID);
-            ViewBag.DesignationID = new SelectList(db.DesignationTables, "DesignationID", "Title", staffTable.DesignationID);
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", staffTable.UserID);
             return View(staffTable);
         }
@@ -147,7 +157,6 @@ namespace SchoolManagementSystem.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DesignationID = new SelectList(db.DesignationTables, "DesignationID", "Title", staffTable.DesignationID);
             ViewBag.DesignationID = new SelectList(db.DesignationTables, "DesignationID", "Title", staffTable.DesignationID);
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", staffTable.UserID);
             return View(staffTable);

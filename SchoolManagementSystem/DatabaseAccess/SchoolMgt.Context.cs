@@ -26,8 +26,6 @@ namespace DatabaseAccess
         }
     
         public virtual DbSet<AnnualTable> AnnualTables { get; set; }
-        public virtual DbSet<AttendanceTable> AttendanceTables { get; set; }
-        public virtual DbSet<ClassSubjectTable> ClassSubjectTables { get; set; }
         public virtual DbSet<ClassTable> ClassTables { get; set; }
         public virtual DbSet<DesignationTable> DesignationTables { get; set; }
         public virtual DbSet<EmployeeCertificationTable> EmployeeCertificationTables { get; set; }
@@ -39,7 +37,6 @@ namespace DatabaseAccess
         public virtual DbSet<EmployeeSkillTable> EmployeeSkillTables { get; set; }
         public virtual DbSet<EmployeeWorkExperienceTable> EmployeeWorkExperienceTables { get; set; }
         public virtual DbSet<EventTable> EventTables { get; set; }
-        public virtual DbSet<ExamMarksTable> ExamMarksTables { get; set; }
         public virtual DbSet<ExamTable> ExamTables { get; set; }
         public virtual DbSet<ProgrameSessionTable> ProgrameSessionTables { get; set; }
         public virtual DbSet<ProgrameTable> ProgrameTables { get; set; }
@@ -51,11 +48,21 @@ namespace DatabaseAccess
         public virtual DbSet<SubjectTable> SubjectTables { get; set; }
         public virtual DbSet<SubmissionFeeTable> SubmissionFeeTables { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<TimeTblTable> TimeTblTables { get; set; }
         public virtual DbSet<UserTable> UserTables { get; set; }
         public virtual DbSet<UserTypeTable> UserTypeTables { get; set; }
         public virtual DbSet<v_AllUsers> v_AllUsers { get; set; }
         public virtual DbSet<StaffTable> StaffTables { get; set; }
         public virtual DbSet<StudentTable> StudentTables { get; set; }
+        public virtual DbSet<ExamMarksTable> ExamMarksTables { get; set; }
+        public virtual DbSet<AttendanceTable> AttendanceTables { get; set; }
+        public virtual DbSet<TimeTblTable> TimeTblTables { get; set; }
+        public virtual DbSet<ExpensesTable> ExpensesTables { get; set; }
+        public virtual DbSet<ExpenseTypeTable> ExpenseTypeTables { get; set; }
+        public virtual DbSet<TBL_ADMIN> TBL_ADMIN { get; set; }
+        public virtual DbSet<TBL_QUESTIONS> TBL_QUESTIONS { get; set; }
+        public virtual DbSet<TBL_SETEXAM> TBL_SETEXAM { get; set; }
+        public virtual DbSet<TBL_Scoe> TBL_Scoe { get; set; }
+        public virtual DbSet<tbl_category> tbl_category { get; set; }
+        public virtual DbSet<ClassSubjectTable> ClassSubjectTables { get; set; }
     }
 }

@@ -21,15 +21,19 @@ namespace SchoolManagementSystem.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var studentPromoteTables = db.StudentPromoteTables.Include(s => s.ClassTable).Include(s => s.ProgrameSessionTable).Include(s => s.SectionTable).Include(s => s.StudentTable).OrderByDescending(s => s.StudentPromotedID);
+            var studentPromoteTables = db.StudentPromoteTables.Include(s => s.ClassTable).Include(s => s.ProgrameSessionTable).Include(s => s.SectionTable).Include(s => s.StudentTable).OrderByDescending(e=>e.StudentPromotedID);
             return View(studentPromoteTables.ToList());
         }
-
         public ActionResult GetPromotClsList(string sid)
         {
             int studentid = Convert.ToInt32(sid);
             var student = db.StudentTables.Find(studentid);
-            var promoteid = db.StudentPromoteTables.Where(p => p.StudentID == studentid).Max(m => m.StudentPromotedID);
+            int promoteid = 0;
+            try
+            {
+                promoteid = db.StudentPromoteTables.Where(p => p.StudentID == studentid).Max(m => m.StudentPromotedID);
+            }
+            catch { promoteid = 0; }
             List<ClassTable> classTable = new List<ClassTable>();
             if (promoteid > 0)
             {
@@ -47,15 +51,6 @@ namespace SchoolManagementSystem.Controllers
                 }
             }
             return Json(new { data = classTable }, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult GetAnnualFee(string sid)
-        {
-            int progsessid = Convert.ToInt32(sid);
-            var ps = db.ProgrameSessionTables.Find(progsessid);
-            var annualfee = db.AnnualTables.Where(a => a.AnnualID == ps.ProgrameID).SingleOrDefault();
-            double? fee = annualfee.Fees;
-            return Json(new { fees = fee }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: StudentPromoteTables/Details/5
@@ -144,7 +139,7 @@ namespace SchoolManagementSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(StudentPromoteTable studentPromoteTable)
+        public ActionResult Edit( StudentPromoteTable studentPromoteTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {

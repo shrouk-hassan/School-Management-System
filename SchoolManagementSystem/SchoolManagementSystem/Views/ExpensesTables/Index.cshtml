@@ -1,0 +1,68 @@
+﻿@model IEnumerable<DatabaseAccess.ExpensesTable>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<p>
+    @Html.ActionLink("New Expenses", "Create", null, new { @class = "btn btn-success" })
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">All Expenses</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ExpensesDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Amount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Reason)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ExpenseTypeTable.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserTable.FullName)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExpensesDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Amount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Reason)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExpenseTypeTable.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserTable.FullName)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ExpensesID }, new { @class = "btn btn-primary" }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.ExpensesID }, new { @class = "btn btn-primary" }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.ExpensesID }, new { @class = "btn btn-primary" })
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

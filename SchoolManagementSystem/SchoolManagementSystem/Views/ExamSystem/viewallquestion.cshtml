@@ -1,0 +1,78 @@
+﻿@model IEnumerable<DatabaseAccess.TBL_QUESTIONS>
+
+@{
+    ViewBag.Title = "viewallquestion";
+
+}
+
+<h2>All Question</h2>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Qeustion</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Qeustion
+                        </th>
+                        <th>
+                           Option 'A'
+                        </th>
+                        <th>
+                            Option 'B'
+                        </th>
+                        <th>
+                            Option 'C'
+                        </th>
+                        <th>
+                            Option 'D'
+                        </th>
+                        <th>
+                            Correct Option
+                        </th>
+                        <th>
+                            Subject name
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Q_TEXT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OPA)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OPB)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OPC)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OPD)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.COP)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tbl_category.cat_name)
+                            </td>
+                            <td class="btn-group">
+                                @Html.ActionLink("Edit", "EditQ", new { id = item.QUESTION_ID }, new { @class = "btn btn-primary" }) 
+                                @Html.ActionLink("Delete", "DeleteQ", new { id = item.QUESTION_ID }, new { @class = "btn btn-info" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
