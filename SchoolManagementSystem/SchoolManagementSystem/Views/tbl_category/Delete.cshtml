@@ -12,7 +12,7 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.cat_name)
+            Exam Name
         </dt>
 
         <dd>
@@ -20,7 +20,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.cat_encyptedstring)
+           Room number
         </dt>
 
         <dd>
@@ -28,19 +28,21 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TotalMark)
+           TotalMark
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.TotalMark)
         </dd>
 
+       
+
         <dt>
-            @Html.DisplayNameFor(model => model.TBL_ADMIN.AD_NAME)
+            Subject Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TBL_ADMIN.AD_NAME)
+            @Html.DisplayFor(model => model.SubjectTable.Name)
         </dd>
 
     </dl>

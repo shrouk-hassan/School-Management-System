@@ -223,6 +223,7 @@
     <Compile Include="Controllers\StudentTablesController.cs" />
     <Compile Include="Controllers\SubjectTablesController.cs" />
     <Compile Include="Controllers\SubmissionFeeTablesController.cs" />
+    <Compile Include="Controllers\tbl_categoryController.cs" />
     <Compile Include="Controllers\TimeTableReportController.cs" />
     <Compile Include="Controllers\TimeTblTablesController.cs" />
     <Compile Include="Controllers\UserTablesController.cs" />

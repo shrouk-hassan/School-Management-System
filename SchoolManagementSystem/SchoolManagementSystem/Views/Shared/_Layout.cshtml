@@ -233,7 +233,7 @@
                              data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Custom Configuration:</h6>
-                                @Html.ActionLink("Session", "Index", "SessionTables", null, new { @class = "collapse-item" })
+                                @*@Html.ActionLink("Session", "Index", "SessionTables", null, new { @class = "collapse-item" })*@
                                 @Html.ActionLink("Sections list", "Index", "SectionTables", null, new { @class = "collapse-item" })
                                 @Html.ActionLink("Add a New Section", "Index", "SectionTables", null, new { @class = "collapse-item" })
 
@@ -277,7 +277,7 @@
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Custom Configuration:</h6>
                                 @Html.ActionLink("Class", "Index", "ClassTables", null, new { @class = "collapse-item" })
-                                @Html.ActionLink("Class Subject Setting", "Index", "ClassSubjectTables", null, new { @class = "collapse-item" })
+                                @*@Html.ActionLink("Class Subject Setting", "Index", "ClassSubjectTables", null, new { @class = "collapse-item" })*@
                              
 
                             </div>
@@ -326,8 +326,8 @@
                                 @{
                                     if (usertypeid == 4 || usertypeid == 1 || usertypeid == 2)//Admin  or Manegar or Teacher
                                     {
-                                        @Html.ActionLink("New Exam Types", "AddCategory", "ExamSystem", null, new { @class = "collapse-item" })
-
+                                        @*@Html.ActionLink("New Exam Types", "AddCategory", "ExamSystem", null, new { @class = "collapse-item" })*@
+                                        @Html.ActionLink("New Exam Types", "Index", "tbl_category", null, new { @class = "collapse-item" })
                                         @Html.ActionLink("Add Question", "Addquestion", "ExamSystem", null, new { @class = "collapse-item" })
                                     }
                                 }
@@ -399,7 +399,7 @@
                 if (usertypeid == 4 ||  usertypeid == 1) //Admin or  Manegar
                 {
 
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseexpenses"
                            aria-expanded="true" aria-controls="collapseexpenses">
                             <i class="fas fa-fw fa-folder"></i>
@@ -417,7 +417,7 @@
                                 @Html.ActionLink("Expenses List", "Index", "ExpensesTables", null, new { @class = "collapse-item" })
                             </div>
                         </div>
-                    </li>
+                    </li>*@
                     }
                 }
             <!-- Nav Item - Charts -->

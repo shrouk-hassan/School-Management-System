@@ -174,3 +174,4 @@ C:\Users\Target\Downloads\Final Project\New folder\SchoolManagementSystem\Databa
 C:\Users\Target\Downloads\Final Project\New folder\SchoolManagementSystem\DatabaseAccess\obj\Debug\DatabaseAccess.csproj.CopyComplete
 C:\Users\Target\Downloads\Final Project\New folder\SchoolManagementSystem\DatabaseAccess\obj\Debug\DatabaseAccess.dll
 C:\Users\Target\Downloads\Final Project\New folder\SchoolManagementSystem\DatabaseAccess\obj\Debug\DatabaseAccess.pdb
+C:\Users\Target\Downloads\Final Project\New folder\SchoolManagementSystem\DatabaseAccess\obj\Debug\DatabaseAccess.csprojAssemblyReference.cache

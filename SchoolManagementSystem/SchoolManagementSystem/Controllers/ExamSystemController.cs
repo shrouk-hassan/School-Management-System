@@ -62,9 +62,11 @@ namespace SchoolManagementSystem.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            List<tbl_category> li = db.tbl_category.OrderByDescending(x => x.cat_id).ToList();
+            var tbl_category = db.tbl_category.Include(t => t.TBL_ADMIN).Include(t => t.SubjectTable);
+            //List<tbl_category> li = db.tbl_category.OrderByDescending(x => x.cat_id).Include(t => t.SubjectTable).ToList();
+            List<tbl_category> li = (List<tbl_category>)tbl_category;
             ViewData["list"] = li;
-
+            ViewBag.SubjectID = new SelectList(db.SubjectTables, "SubjectID", "Name");
 
             return View();
         }
@@ -78,14 +80,14 @@ namespace SchoolManagementSystem.Controllers
             /// Session["ad_id"] = 1;
             List<tbl_category> li = db.tbl_category.OrderByDescending(x => x.cat_id).ToList();
             ViewData["list"] = li;
-
+            
             Random r = new Random();
             tbl_category c = new tbl_category();
             c.cat_name = cat.cat_name;
             c.cat_fk_adid = cat.cat_fk_adid;
             c.TotalMark = cat.TotalMark;
             c.cat_encyptedstring = cyptop.Encrypt(cat.cat_name.Trim() + r.Next().ToString(), true);
-
+            ViewBag.SubjectID = new SelectList(db.SubjectTables, "SubjectID", "Name", cat.SubjectID);
             db.tbl_category.Add(c);
             db.SaveChanges();
             return RedirectToAction("AddCategory");
